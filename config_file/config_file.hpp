@@ -10,5 +10,6 @@ private:
 public:
     config_file(const std::string& name_of_file);
     std::vector<partition_server> split_servers(std::vector<std::string> lines_of_conf);
+    int check_and_store_data(std::string line, partition_server *new_server, std::vector<std::string>::iterator *it);
     ~config_file();
 };

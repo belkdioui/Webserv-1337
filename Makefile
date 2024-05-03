@@ -1,5 +1,5 @@
 CXX = c++
-SRC = main.cpp ./config_file/config_file.cpp
+SRC = main.cpp ./config_file/config_file.cpp ./config_file/partition_server.cpp
 OBJ = $(SRC:.cpp=.o)
 NAME = Webserv
 RM = rm -rf

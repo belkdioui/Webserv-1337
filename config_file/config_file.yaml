@@ -20,7 +20,7 @@ server:
 		404: error_pages/404.html
 		405: error_pages/405.html
 		413: error_pages/413.html
-
+   
     # Location Blocks
 	location: /
 		index: index.html
