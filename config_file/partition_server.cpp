@@ -2,7 +2,7 @@
 
 partition_server::partition_server()
 {
-    set_max_body_size("0");
+    
 }
 
 partition_server::~partition_server()
