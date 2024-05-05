@@ -1,5 +1,6 @@
 #include <iostream>
 #include <map>
+#include "location_param.hpp"
 
 class partition_server{
 
