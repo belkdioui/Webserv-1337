@@ -37,14 +37,16 @@ int config_file::check_and_store_data(partition_server *new_server, std::vector<
         if(value.empty())
         {
             it++;
-            std::cout << "after: " <<  *it << std::endl;
             std::stringstream sl(*it);
             sl>>index>>value;
-            std::cout<<value<<std::endl;
-            std::cout<<"****"<<index<<"****"<<std::endl;
+            new_server->set_error_pages(index, value);
             while(index == "400:" || index == "403:" || index == "404:" || index == "405:" || index == "413:" || index == "\n")
             {
-                std::cout<<"wwwwwwwwwwwwwwwwwwwwww"<<value<<std::endl;
+                it++;
+                sl.clear();
+                sl<<(*it);
+                sl>>index>>value;
+                new_server->set_error_pages(index, value);
             }
         }
     }

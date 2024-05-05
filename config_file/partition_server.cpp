@@ -35,6 +35,11 @@ void partition_server::set_index(std::string Index)
     index = Index;
 }
 
+void partition_server::set_error_pages(std::string index, std::string value)
+{
+    error_pages[index] = value;
+}
+
 std::string partition_server::get_host()
 {
     return host;
@@ -58,4 +63,10 @@ std::string partition_server::get_max_body_size()
 std::string partition_server::get_index()
 {
     return index;
+}
+
+std::string partition_server::get_error_pages(std::string key)
+{
+    std::map<std::string, std::string>::iterator it = error_pages.find(key);
+    return it->second;
 }
