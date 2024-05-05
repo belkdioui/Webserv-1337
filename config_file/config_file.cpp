@@ -50,6 +50,10 @@ int config_file::check_and_store_data(partition_server *new_server, std::vector<
             }
         }
     }
+    else if (index == "location:")
+    {
+        
+    }
     return(0);
 }
 
