@@ -25,7 +25,7 @@ void location_param::set_index(std::string Index)
     index = Index;
 }
 
-void location_param::set_directory_listing(bool Directory_listing)
+void location_param::set_directory_listing(std::string Directory_listing)
 {
     directory_listing = Directory_listing;
 }
@@ -50,7 +50,7 @@ std::string location_param::get_index()
     return index;
 }
 
-bool location_param::get_directory_listing()
+std::string location_param::get_directory_listing()
 {
     return directory_listing;
 }

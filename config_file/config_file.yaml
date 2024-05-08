@@ -5,7 +5,7 @@
 #############################################
 
 server:
-	host: 0.0.0.0
+	host: 0.5.0.0
 	port: 2003
 	root: /Users/abouabra/1337/backserve/assets/server_1/
 	max_body_size: 1000000 # 1MB
@@ -44,7 +44,7 @@ server:
 
 
 server:
-	host: 0.0.0.0
+	host: 0.6.0.0
 	port: 2004
 	root: /Users/abouabra/1337/backserve/assets/server_2/
 	index: index.html
@@ -103,7 +103,7 @@ server:
 		methods: GET | DELETE
 
 server:
-	host: 0.0.0.0
+	host: 0.7.0.0
 	port: 2005
 	root: /Users/abouabra/1337/backserve/assets/server_3/
 	max_body_size: 1000000 # 1MB

@@ -21,10 +21,12 @@ class partition_server{
         void set_max_body_size(std::string );
         void set_index(std::string );
         void set_error_pages(std::string, std::string);
+        void set_location(std::string, location_param);
         std::string get_host();
         std::string get_port();
         std::string get_root();
         std::string get_max_body_size();
         std::string get_index();
         std::string get_error_pages(std::string);
+        location_param get_location(std::string);
 };
