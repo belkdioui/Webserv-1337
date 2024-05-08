@@ -2,6 +2,11 @@
 #include <fstream>
 #include <sstream>
 
+std::vector<partition_server> config_file::get_servers()
+{
+    return servers;
+}
+
 int cal_num_of_server(std::vector<std::string> lines_of_conf)
 {
     int num = 0;
@@ -13,7 +18,7 @@ int cal_num_of_server(std::vector<std::string> lines_of_conf)
     return (num);
 }
 
-int check_location(std::string index, std::string value, location_param loc)
+int check_location(std::string index, std::string value, location_param &loc)
 {
     if (index == "redirect_URL:")
         loc.set_redirect_url(value);
@@ -69,25 +74,22 @@ int config_file::check_and_store_data(partition_server *new_server, std::vector<
     {
         if(!value.empty())
         {
-            // std::string save;
-            // save = value;
-            // it++;
-            // std::stringstream sl(*it);
-            // sl>>index>>value;
-            // location_param loc;
-            // check_location(index, value, loc);
-            // while (index == "redirect_URL:" || index == "index:" || index == "methods:" || index == "directory_listing:" || index == "upload_dir:" || index == "directory_listing:")
-            // {
-            //     // std::cout<<index<<" : "<<value<<std::endl;
-            //     it++;
-            //     sl.clear();
-            //     sl<<(*it);
-            //     sl>>index>>value;
-            //     check_location(index, value, loc);
-            // }
-            // new_server->set_location(save, loc);
-            // location_param new_s = new_server->get_location("/upload");
-            // std::cout<<new_s.get_index()<<std::endl;
+            std::string save;
+            save = value;
+            it++;
+            std::stringstream sl(*it);
+            sl>>index>>value;
+            location_param loc;
+            check_location(index, value, loc);
+            while (index == "redirect_URL:" || index == "index:" || index == "methods:" || index == "directory_listing:" || index == "upload_dir:" || index == "directory_listing:")
+            {
+                it++;
+                std::stringstream sn(*it);
+                sn<<(*it);
+                sn>>index>>value;
+                check_location(index, value, loc);
+            }
+            new_server->set_location(save, loc);
         }
     }
     return(0);
@@ -104,7 +106,6 @@ std::vector<partition_server> config_file::split_servers(std::vector<std::string
             {
                 partition_server new_server;
                 it++;
-                std::cout<<*it<<std::endl;
                 while(*it != "server:" && it != lines_of_conf.end() && *(it+1) != "server:")
                 {
                     check_and_store_data(&new_server, it);                    
@@ -114,7 +115,7 @@ std::vector<partition_server> config_file::split_servers(std::vector<std::string
                     new_server.set_max_body_size("100000");
                 servers.push_back(new_server);
                 if(it == lines_of_conf.end())
-                    exit(0);
+                    return servers;
             }
         }
     }
@@ -133,7 +134,6 @@ config_file::config_file(const std::string& name_of_file)
     while (std::getline(file, line))
         lines_of_conf.push_back(line);
     split_servers(lines_of_conf);
-
 }
 
 config_file::~config_file()

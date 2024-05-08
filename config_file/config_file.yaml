@@ -58,10 +58,10 @@ server:
 		502: error_pages/502.html
 		504: error_pages/504.html
 
-	cgi:
-		.py: /usr/bin/python3
-		.sh: /bin/bash
-		.php: /usr/bin/php
+	# cgi:
+	# 	.py: /usr/bin/python3
+	# 	.sh: /bin/bash
+	# 	.php: /usr/bin/php
 
 	location: /
 		index: index.html
@@ -118,8 +118,8 @@ server:
 		502: error_pages/502.html
 		504: error_pages/504.html
 
-	cgi:
-		.py: /usr/bin/python3
+	# cgi:
+	# 	.py: /usr/bin/python3
 
 	location: /
 		root: /Users/abouabra/1337/backserve/assets/server_3/home/

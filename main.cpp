@@ -9,4 +9,10 @@ int main(int ac, char **av)
     }
     const std::string name = av[1];
     config_file conf(name);
+    std::vector<partition_server> servers = conf.get_servers();
+    for(std::vector<partition_server>::iterator it = servers.begin(); it != servers.end(); it++)
+    {
+        std::cout<<it->get_host()<<std::endl;
+    }
+     
 }
