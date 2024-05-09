@@ -106,7 +106,7 @@ std::vector<partition_server> config_file::split_servers(std::vector<std::string
             {
                 partition_server new_server;
                 it++;
-                while(*it != "server:" && it != lines_of_conf.end() && *(it+1) != "server:")
+                while(it != lines_of_conf.end() && !(*it).empty() && *(it + 1) != "server:")
                 {
                     check_and_store_data(&new_server, it);                    
                         ++it;

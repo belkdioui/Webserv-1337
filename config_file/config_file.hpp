@@ -1,5 +1,6 @@
 #include <vector>
 #include <iostream>
+#include <iterator>
 #include "partition_server.hpp"
 
 class config_file
