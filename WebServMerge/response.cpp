@@ -6,13 +6,14 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 10:17:38 by rarraji           #+#    #+#             */
-/*   Updated: 2024/05/09 19:26:16 by rarraji          ###   ########.fr       */
+/*   Updated: 2024/05/10 11:32:37 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "response.hpp"
 #include<dirent.h>
 
+#define PATH "/Users/rarraji/Desktop/lastWeb/Server/pages/"
 
 Response::Response()
 {
@@ -41,7 +42,7 @@ void Response::SetSocket(int tmp_SetSocket)
 
 std::string Response::GetHeader()
 {
-  std::cout << "here\n";
+//   std::cout << "here\n";
   return(this->header);
 }
 std::string Response::GetBody()
@@ -87,8 +88,8 @@ void Response::run()
                 std::string test1 = "/favicon.ico";
                 std::string path = "./pages";
                 std::string new_path = "./pages";
-                std::cout << "----> " << check_cgi << std::endl;
-                std::cout << "---->" << url << "<----"<< std::endl;
+                // std::cout << "----> " << check_cgi << std::endl;
+                // std::cout << "---->" << url << "<----"<< std::endl;
                 int check = true;
 
                 if (check_cgi == false)
@@ -102,15 +103,17 @@ void Response::run()
                     //     url = "/home";
                     if (url.compare("/favicon.ico") == 0)
                     {
-                        std::cout << "jiji"<< url << std::endl;
+                        // std::cout << "jiji"<< url << std::endl;
                         check = false;
-                        url = "/Users/rarraji/Desktop/lastWeb/Server/pages/images/rarraji.jpg";
+                        url = PATH;
+                        url += "rarraji.jpg";
                     }
                     if (url.compare("/") == 0)
                     {
-                        std::cout << "jiji"<< url << std::endl;
+                        // std::cout << "jiji"<< url << std::endl;
                         check = false;
-                        url = "/Users/rarraji/Desktop/lastWeb/Server/pages/index.html";
+                        url = PATH;
+                        url += "index.html";
                     }
                     // if (url.compare("/upload") == 0)
                     //     url = "/upload";
@@ -142,37 +145,44 @@ void Response::run()
                 }
                 else
                     url = "./output.txt";
-                std::cout << "url : "<< url << std::endl;
+                // std::cout << "url : "<< url << std::endl;
                 std::stringstream buffer;
                 SendResponse = "HTTP/1.1 200 OK\r\n";
                 std::string new_url;
-                if(url.find("/Users/rarraji/Desktop/lastWeb/Server/pages") == std::string::npos)
-                    new_url = "/Users/rarraji/Desktop/lastWeb/Server/pages" + url;
+                if(url.find(PATH) == std::string::npos)
+                {
+                    new_url = PATH; 
+                    new_url += url;
+                    
+                }
                 else
                     new_url = url;    
-                if (url.compare("./ErrorPages") == 0)
+                if (url.compare("/ErrorPages") == 0)
                 {
-                    std::cout << "hiii" << std::endl;
+                    // std::cout << "hiii" << std::endl;
                     SendResponse += "Content-Type: text/html\r\n";      
                     SendResponse += "\r\n";
-                    SendResponse += generateHTML(url.c_str());
+                    std::string tmp;
+                    tmp = PATH;
+                    tmp += "ErrorPages";
+                    SendResponse += generateHTML(tmp.c_str());
                 }
                 else if (url.find(".jpg") != std::string::npos)
                 {
-                    std::cout << "->new_url : "<< new_url << std::endl;
+                    // std::cout << "->new_url : "<< new_url << std::endl;
                     std::ifstream file(new_url.c_str(), std::ios::binary);
                     if (!file.is_open()) 
                     {
                         std::cerr << "[Server] Impossible d'ouvrir image " << "\n";
                     }
-                    std::cout << "here" << std::endl;
+                    // std::cout << "here" << std::endl;
                     buffer << file.rdbuf();
                     file.close();
                     SendResponse += "Content-Type: image/jpg\r\n";
                 }
                 else if (url.compare("/images/vedeo.mp4") == 0)
                 {
-                    std::cout << "new_url : "<< new_url << std::endl;
+                    // std::cout << "new_url : "<< new_url << std::endl;
                     std::ifstream file(new_url.c_str(), std::ios::binary);
                     if (!file.is_open()) 
                     {
@@ -192,13 +202,17 @@ void Response::run()
                 }
                 else
                 {
-                    std::cout << "new_url : "<< new_url << std::endl;
+                    if(check_cgi == true)
+                       new_url = url;
                     std::ifstream file(new_url.c_str());
                     // int check = 1;
                     if (!file.is_open()) 
                     {
                         file.close();
-                        std::ifstream file("/Users/rarraji/Desktop/lastWeb/Server/pages/ErrorPages/notFound.html");
+                        std::string tmp;
+                        tmp = PATH;
+                        tmp += "ErrorPages/notFound.html";
+                        std::ifstream file(tmp);
                         // check = 0;
                         if (!file.is_open())
                         {
@@ -214,13 +228,12 @@ void Response::run()
                 }
                 if (url.compare("/ErrorPages") != 0)
                 {
-                    // std::cout << "[Server]" << "\n";
                     SendResponse += "\r\n";
                     SendResponse += buffer.str();
+                }
                     // std::cout << "---------------------------------"  << std::endl;
                     // std::cout << "SendResponse : " << buffer.str() << std::endl;
                     // std::cout << "---------------------------------"  << std::endl;
-                }
                 check_cgi = false;
                 check = true;
 }
