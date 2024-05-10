@@ -6,14 +6,14 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 10:17:38 by rarraji           #+#    #+#             */
-/*   Updated: 2024/05/10 11:32:37 by rarraji          ###   ########.fr       */
+/*   Updated: 2024/05/10 11:56:21 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "response.hpp"
 #include<dirent.h>
 
-#define PATH "/Users/rarraji/Desktop/lastWeb/Server/pages/"
+#define PATH "/Users/rarraji/Desktop/prj/WebServMerge/pages/"
 
 Response::Response()
 {
@@ -106,7 +106,7 @@ void Response::run()
                         // std::cout << "jiji"<< url << std::endl;
                         check = false;
                         url = PATH;
-                        url += "rarraji.jpg";
+                        url += "images/solix.jpg";
                     }
                     if (url.compare("/") == 0)
                     {
@@ -169,7 +169,7 @@ void Response::run()
                 }
                 else if (url.find(".jpg") != std::string::npos)
                 {
-                    // std::cout << "->new_url : "<< new_url << std::endl;
+                    std::cout << "->new_url : "<< new_url << std::endl;
                     std::ifstream file(new_url.c_str(), std::ios::binary);
                     if (!file.is_open()) 
                     {

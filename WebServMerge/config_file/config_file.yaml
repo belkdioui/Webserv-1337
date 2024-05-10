@@ -60,10 +60,6 @@ server:
 		502: error_pages/502.html
 		504: error_pages/504.html
 
-	# cgi:
-	# 	.py: /usr/bin/python3
-	# 	.sh: /bin/bash
-	# 	.php: /usr/bin/php
 
 	location: /
 		index: index.html
