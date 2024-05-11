@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 10:17:36 by rarraji           #+#    #+#             */
-/*   Updated: 2024/05/07 15:34:04 by rarraji          ###   ########.fr       */
+/*   Updated: 2024/05/11 09:44:14 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ class Response
     std::string methode;
     std::string url;
     std::string SendResponse;
+    std::map <std::string , std::string> ContentType;
+
     Response();
     ~Response();
     std::string generateHTML(const char* path);
@@ -58,5 +60,7 @@ class Response
     std::string GetBody();
     std::string GetHeader();
     void run();
+    std::string AddContentType();
+    void RemplirContentType();
 
 };

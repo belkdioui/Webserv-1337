@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 09:55:27 by rarraji           #+#    #+#             */
-/*   Updated: 2024/05/10 10:26:43 by rarraji          ###   ########.fr       */
+/*   Updated: 2024/05/11 09:38:51 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 Request::Request()
 {
+  // response.AddContentType( );
   compareLenBody = 0;
   Get = true;
   last = true;
@@ -321,7 +322,7 @@ void Request::Check_read(int socket, fd_set &read_fds, fd_set &write_fds)
       // std::cout << "herre\n";
       response.SetHeader(header);
       response.SetBody(body);
-      response.SetUrl(url);
+      response.SetUrl(url); 
       if (response.url.find(".py") != std::string::npos)
       {
         // std::cout << "hnaaaaaaaaa\n";

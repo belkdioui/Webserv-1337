@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 15:53:48 by rarraji           #+#    #+#             */
-/*   Updated: 2024/05/10 11:28:15 by rarraji          ###   ########.fr       */
+/*   Updated: 2024/05/11 09:43:30 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 Server::Server() 
 {
+    
     // server_socket_1 = create_server_socket(PORT_1);
     // server_socket_2 = create_server_socket(PORT_2);
     // server_socket_3 = create_server_socket(PORT_3);
@@ -23,8 +24,40 @@ Server::Server()
     // {
     //     int server_socket_1 = create_server_socket(serverSockets[i].port);
     // }
+    // RemplirContentType();
+    // exit(1);
     
 }
+
+// void Server::RemplirContentType()
+// {
+//     std::ifstream ss("./Content.type");
+//     std::string buffer;
+//     std::string data;
+//     while (getline(ss, buffer))
+//     {
+//         data += buffer;
+//         data += "\n";
+//     }
+    
+//     std::stringstream sss(data);
+//     int i = 0;
+//     std::string first;
+//     std::string second;
+//     while (sss >> buffer)
+//     { 
+//         if (i % 2 == 0)
+//             first = buffer;
+//         else
+//         {
+//             second = buffer;
+//             ContentType.insert(std::make_pair(first, second));
+//         }
+//         i++;    
+//     }
+//     for (std::map<std::string, std::string>::iterator it = ContentType.begin(); it != ContentType.end(); ++it);
+//         // std::cout << ContentType[it->first] << std::endl; 
+// }
 
 
 int convertStringToInt(const std::string& str) 
