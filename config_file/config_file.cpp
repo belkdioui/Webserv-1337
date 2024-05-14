@@ -1,6 +1,75 @@
 #include "config_file.hpp"
 #include <fstream>
 #include <sstream>
+#include <regex>
+
+bool check_path(std::string path) {
+    if (path.empty()) {
+        return false;
+    }
+    const size_t maxPathLength = 4096;
+    if (path.length() > maxPathLength) {
+        return false;
+    }
+    std::regex forbiddenChars("[\\0]");
+    if (std::regex_search(path, forbiddenChars)) {
+        return false;
+    }
+    if (path[0] != '/' && path.find('/') == std::string::npos) {
+        return false;
+    }
+    return true;
+}
+
+void print_error(std::string str, std::string str1)
+{
+    std::cout<<str<<std::endl;
+    std::cout<<str1<<std::endl;
+    exit(1);
+}
+
+int convert_string_to_int(std::string str)
+{
+    int i = 0;
+    
+    while(str[i])
+    {
+        if(!(str[i] >= 48 && str[i] <= 57))
+            print_error("error in this part : ", str);
+        i++;
+    }
+    std::stringstream ss(str);
+    int num;
+    ss>>num;
+    return (num);
+}
+
+int count_alphabetic_and_check_is_digits(char c, std::string str, int number, int min , int max)
+{
+    std::string word;
+    for (size_t i = 0; i < str.size() && number > 0; i++)
+    {
+        if(str[i] == c)
+            number--;
+    }
+    if(number > 0)
+        print_error("error in this part : ", str);
+    std::stringstream ss(str);
+
+    while(!ss.eof())
+    {
+        int num;
+        getline(ss, word, c);
+        num = convert_string_to_int(word);
+        
+        if (min >= 0 && max >= 0)
+        {
+            if(num < min || num > max)
+                print_error("error in this part : ", str);
+        }
+    }
+    return(0);  
+}
 
 std::vector<partition_server> config_file::get_servers()
 {
@@ -12,8 +81,8 @@ int cal_num_of_server(std::vector<std::string> lines_of_conf)
     int num = 0;
     for (std::vector<std::string>::iterator it= lines_of_conf.begin(); it != lines_of_conf.end(); ++it)
     {
-            if (*it == "server:")
-                num++;
+        if (*it == "server:")
+            num++;
     }
     return (num);
 }
@@ -21,7 +90,9 @@ int cal_num_of_server(std::vector<std::string> lines_of_conf)
 int check_location(std::string index, std::string value, location_param &loc)
 {
     if (index == "redirect_URL:")
+    {
         loc.set_redirect_url(value);
+    }
     else if (index == "index:")
         loc.set_index(value);
     else if (index == "methods:")
@@ -43,15 +114,29 @@ int config_file::check_and_store_data(partition_server *new_server, std::vector<
 
     ss>>index>>value;
     if (index == "host:")
+    {
+        count_alphabetic_and_check_is_digits('.', value, 3, 0, 255);
         new_server->set_host(value);
+    }
     else if (index == "port:")
+    {
+        count_alphabetic_and_check_is_digits('.', value, -1, -1, -1);
         new_server->set_port(value);
+    }
     else if (index == "root:")
-        new_server->set_root(value);
+    {
+        if(check_path(value) == false)
+            exit(1);
+    }
     else if (index == "max_body_size:")
+    {
         new_server->set_max_body_size(value);
+        count_alphabetic_and_check_is_digits('.', value, -1, 0, 15000000);
+    }
     else if (index == "index:")
+    {
         new_server->set_index(value);
+    }
     else if (index == "error_pages:")
     {
         if(value.empty())
@@ -118,6 +203,10 @@ std::vector<partition_server> config_file::split_servers(std::vector<std::string
                     return servers;
             }
         }
+    }
+    else
+    {
+        std::cout<<"error in this part "<<std::endl;
     }
     return servers;
 }

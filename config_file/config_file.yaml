@@ -5,7 +5,7 @@
 #############################################
 
 server:
-	host: 0.5.0.0
+	host: 0.255.0.0
 	port: 2003
 	root: /Users/abouabra/1337/backserve/assets/server_1/
 	max_body_size: 1000000 # 1MB
@@ -14,7 +14,7 @@ server:
 	index: index.html
 
 	# Error Pages
-	error_pages:
+	error_pages:          
 		400: error_pages/400.html
 		403: error_pages/403.html
 		404: error_pages/404.html

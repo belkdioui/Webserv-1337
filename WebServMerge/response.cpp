@@ -6,14 +6,13 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 10:17:38 by rarraji           #+#    #+#             */
-/*   Updated: 2024/05/11 10:02:45 by rarraji          ###   ########.fr       */
+/*   Updated: 2024/05/09 19:26:16 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "response.hpp"
 #include<dirent.h>
 
-#define PATH "/Users/rarraji/Desktop/prj/WebServMerge/pages/"
 
 Response::Response()
 {
@@ -42,43 +41,12 @@ void Response::SetSocket(int tmp_SetSocket)
 
 std::string Response::GetHeader()
 {
-//   std::cout << "here\n";
+  std::cout << "here\n";
   return(this->header);
 }
 std::string Response::GetBody()
 {
   return(this->body);
-}
-
-
-void Response::RemplirContentType()
-{
-    std::ifstream ss("./Content.type");
-    std::string buffer;
-    std::string data;
-    while (getline(ss, buffer))
-    {
-        data += buffer;
-        data += "\n";
-    }
-    
-    std::stringstream sss(data);
-    int i = 0;
-    std::string first;
-    std::string second;
-    while (sss >> buffer)
-    { 
-        if (i % 2 == 0)
-            first = buffer;
-        else
-        {
-            second = buffer;
-            ContentType.insert(std::make_pair(first, second));
-        }
-        i++;    
-    }
-    for (std::map<std::string, std::string>::iterator it = ContentType.begin(); it != ContentType.end(); ++it);
-        // std::cout << ContentType[it->first] << std::endl; 
 }
 
 std::string Response::generateHTML(const char* path) 
@@ -105,48 +73,12 @@ std::string Response::generateHTML(const char* path)
 }
 
 
-std::string Response::AddContentType()
-{
-    std::string part = "Content-Type: ";
-    std::string check;
-    size_t pos = url.find('.');
-    if (pos != std::string::npos)
-    {
-        check = url.substr(pos + 1 , url.length());
-        for (std::map<std::string, std::string>::iterator it = ContentType.begin(); it != ContentType.end(); ++it)
-        {
-            if(check.compare(it->first) == 0)
-            {
-                part += it->second;
-                part += "\r\n";
-                break;
-            }
-        }
-        
-    }
-    if(part.compare("Content-Type: ") == 0)
-    {
-        part += "text/html";
-        part += "\r\n";   
-    }
-        
-    std::cout << "HNA : ---> "<< part << std::endl;
-    // exit(1);
-    return(part);   
-    // for (size_t i = 0; i < ; i++)
-    // {
-    //     /* code */
-    // }
-}
-
-
 
 void Response::run()
 {
-    RemplirContentType();
-  std::cout << "\033[0;31m" << "*******************************HEADER*************************************" << "\033[0m" << std::endl;
-  std::cout << "\033[0;31m" << header << "\033[0m" << std::endl;
-  std::cout << "\033[0;31m" << "**************************************************************************" << "\033[0m" << std::endl;
+//   std::cout << "\033[0;31m" << "*******************************HEADER*************************************" << "\033[0m" << std::endl;
+//   std::cout << "\033[0;31m" << header << "\033[0m" << std::endl;
+//   std::cout << "\033[0;31m" << "**************************************************************************" << "\033[0m" << std::endl;
 //   std::cout << "\033[0;33m" << "********************************BODY*************************************" << "\033[0m" << std::endl;
 //   std::cout << "\033[0;33m" << body << "\033[0m" << std::endl;
 //   std::cout << "\033[0;33m" << "*************************************************************************" << "\033[0m" << std::endl;
@@ -155,8 +87,8 @@ void Response::run()
                 std::string test1 = "/favicon.ico";
                 std::string path = "./pages";
                 std::string new_path = "./pages";
-                // std::cout << "----> " << check_cgi << std::endl;
-                // std::cout << "---->" << url << "<----"<< std::endl;
+                std::cout << "----> " << check_cgi << std::endl;
+                std::cout << "---->" << url << "<----"<< std::endl;
                 int check = true;
 
                 if (check_cgi == false)
@@ -170,17 +102,15 @@ void Response::run()
                     //     url = "/home";
                     if (url.compare("/favicon.ico") == 0)
                     {
-                        // std::cout << "jiji"<< url << std::endl;
+                        std::cout << "jiji"<< url << std::endl;
                         check = false;
-                        url = PATH;
-                        url += "images/solix.jpg";
+                        url = "/Users/bel-kdio/Desktop/reda/WebServMerge/pages/images/rarraji.jpg";
                     }
                     if (url.compare("/") == 0)
                     {
-                        // std::cout << "jiji"<< url << std::endl;
+                        std::cout << "jiji"<< url << std::endl;
                         check = false;
-                        url = PATH;
-                        url += "index.html";
+                        url = "/Users/bel-kdio/Desktop/reda/WebServMerge/pages/index.html";
                     }
                     // if (url.compare("/upload") == 0)
                     //     url = "/upload";
@@ -212,29 +142,20 @@ void Response::run()
                 }
                 else
                     url = "./output.txt";
-                // std::cout << "url : "<< url << std::endl;
+                std::cout << "url : "<< url << std::endl;
                 std::stringstream buffer;
                 SendResponse = "HTTP/1.1 200 OK\r\n";
                 std::string new_url;
-                bool dir = false;
-                if(url.find(PATH) == std::string::npos)
-                {
-                    new_url = PATH; 
-                    new_url += url;
-                    
-                }
+                if(url.find("/Users/bel-kdio/Desktop/reda/WebServMerge/pages") == std::string::npos)
+                    new_url = "/Users/bel-kdio/Desktop/reda/WebServMerge/pages" + url;
                 else
                     new_url = url;    
-                if (url.compare("/ErrorPages") == 0)
+                if (url.compare("./ErrorPages") == 0)
                 {
-                    // std::cout << "hiii" << std::endl;
+                    std::cout << "hiii" << std::endl;
                     SendResponse += "Content-Type: text/html\r\n";      
                     SendResponse += "\r\n";
-                    std::string tmp;
-                    tmp = PATH;
-                    tmp += "ErrorPages";
-                    SendResponse += generateHTML(tmp.c_str());
-                    dir = true;
+                    SendResponse += generateHTML(url.c_str());
                 }
                 else if (url.find(".jpg") != std::string::npos)
                 {
@@ -244,15 +165,14 @@ void Response::run()
                     {
                         std::cerr << "[Server] Impossible d'ouvrir image " << "\n";
                     }
-                    // std::cout << "here" << std::endl;
+                    std::cout << "here" << std::endl;
                     buffer << file.rdbuf();
                     file.close();
-                    SendResponse += AddContentType();
-                    // SendResponse += "Content-Type: image/jpg\r\n";
+                    SendResponse += "Content-Type: image/jpg\r\n";
                 }
                 else if (url.compare("/images/vedeo.mp4") == 0)
                 {
-                    // std::cout << "new_url : "<< new_url << std::endl;
+                    std::cout << "new_url : "<< new_url << std::endl;
                     std::ifstream file(new_url.c_str(), std::ios::binary);
                     if (!file.is_open()) 
                     {
@@ -267,22 +187,18 @@ void Response::run()
                         std::cerr << "[Server] Impossible d'ouvrir le vedeo " << "\n";
                     }
                     fi << buffer.rdbuf();
-                    SendResponse += AddContentType();
-                    // SendResponse += "Content-Type: video/mp4\r\n";
+                    SendResponse += "Content-Type: video/mp4\r\n";
+                    // exit(1);
                 }
                 else
                 {
-                    if(check_cgi == true)
-                       new_url = url;
+                    std::cout << "new_url : "<< new_url << std::endl;
                     std::ifstream file(new_url.c_str());
                     // int check = 1;
                     if (!file.is_open()) 
                     {
                         file.close();
-                        std::string tmp;
-                        tmp = PATH;
-                        tmp += "ErrorPages/notFound.html";
-                        std::ifstream file(tmp);
+                        std::ifstream file("/Users/bel-kdio/Desktop/reda/WebServMerge/pages/ErrorPages/notFound.html");
                         // check = 0;
                         if (!file.is_open())
                         {
@@ -294,19 +210,17 @@ void Response::run()
                     }
                     buffer << file.rdbuf();
                     file.close();
-                    SendResponse += AddContentType();
-                    // SendResponse += "Content-Type: text/html\r\n";                    
+                    SendResponse += "Content-Type: text/html\r\n";                    
                 }
-                // if (dir == false)
-                //    SendResponse = AddContentType();
                 if (url.compare("/ErrorPages") != 0)
                 {
+                    // std::cout << "[Server]" << "\n";
                     SendResponse += "\r\n";
                     SendResponse += buffer.str();
-                }
                     // std::cout << "---------------------------------"  << std::endl;
                     // std::cout << "SendResponse : " << buffer.str() << std::endl;
                     // std::cout << "---------------------------------"  << std::endl;
+                }
                 check_cgi = false;
                 check = true;
 }
