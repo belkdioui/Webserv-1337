@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 15:53:48 by rarraji           #+#    #+#             */
-/*   Updated: 2024/05/09 09:47:00 by rarraji          ###   ########.fr       */
+/*   Updated: 2024/05/11 09:43:30 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 Server::Server() 
 {
+    
     // server_socket_1 = create_server_socket(PORT_1);
     // server_socket_2 = create_server_socket(PORT_2);
     // server_socket_3 = create_server_socket(PORT_3);
@@ -23,8 +24,40 @@ Server::Server()
     // {
     //     int server_socket_1 = create_server_socket(serverSockets[i].port);
     // }
+    // RemplirContentType();
+    // exit(1);
     
 }
+
+// void Server::RemplirContentType()
+// {
+//     std::ifstream ss("./Content.type");
+//     std::string buffer;
+//     std::string data;
+//     while (getline(ss, buffer))
+//     {
+//         data += buffer;
+//         data += "\n";
+//     }
+    
+//     std::stringstream sss(data);
+//     int i = 0;
+//     std::string first;
+//     std::string second;
+//     while (sss >> buffer)
+//     { 
+//         if (i % 2 == 0)
+//             first = buffer;
+//         else
+//         {
+//             second = buffer;
+//             ContentType.insert(std::make_pair(first, second));
+//         }
+//         i++;    
+//     }
+//     for (std::map<std::string, std::string>::iterator it = ContentType.begin(); it != ContentType.end(); ++it);
+//         // std::cout << ContentType[it->first] << std::endl; 
+// }
 
 
 int convertStringToInt(const std::string& str) 
@@ -92,15 +125,16 @@ int Server::create_server_socket(int port, std::string ip)
     }
     RemplirInfo(socket_fd);
     // mapinfo.insert(std::make_pair(socket_fd, info));
-    std::cout << "[Server] Created server socket fd: " << socket_fd << std::endl;
-
+    std::cout << "\033[0;31m" " [Server] " << "\033[0m" << "Created server socket fd: " << socket_fd << std::endl;
+    int on = 1;
+    setsockopt(socket_fd,SOL_SOCKET, SO_REUSEADDR,(const char *)&on, sizeof(int));
     status = bind(socket_fd, (struct sockaddr *)&sa, sizeof sa);
     if (status !=   0) 
     {
         std::cerr << "[Server] Bind error: " << strerror(errno) << std::endl;
         return (-1);
     }
-    std::cout << "[Server] Bound socket to localhost port " << port << std::endl;
+    std::cout << "\033[0;31m" " [Server] " << "\033[0m" << "Bound socket to port " << "\033[0;34m" << port << "\033[0m" << std::endl;
 
     status = listen(socket_fd,   10);
     if (status !=   0) 
@@ -108,7 +142,7 @@ int Server::create_server_socket(int port, std::string ip)
         std::cerr << "[Server] Listen error: " << strerror(errno) << std::endl;
         return (-1);
     }
-    std::cout << "[Server] Listening on port " << port << std::endl;
+    std::cout << "\033[0;31m" " [Server] " << "\033[0m" << "Listening on port "  << "\033[0;34m" << port << "\033[0m" << std::endl;
     return (socket_fd);
 }
 
@@ -127,7 +161,7 @@ void Server::accept_new_connection(int listener_socket, fd_set &read_fds, int *f
     FD_SET(client_fd, &read_fds);
     if (client_fd > *fd_max) 
         *fd_max = client_fd;
-    std::cout << "[Server] Accepted new connection on client socket " << client_fd << ".\n";
+    std::cout <<"\033[0;31m" " [Server] " << "\033[0m" << "Accepted new connection on client socket " << client_fd << ".\n";
 }
 
 void Server::read_data_from_socket(int socket, fd_set &read_fds, fd_set &write_fds) 
@@ -139,7 +173,7 @@ int Server::CheckIsMyServer(int nb)
 {
   for (size_t i = 0; i < Sockets.size(); i++)
   {
-    std::cout << Sockets[i] << std::endl;
+    // std::cout << Sockets[i] << std::endl;
     if (nb == Sockets[i])
         return(1);
   }
@@ -161,7 +195,7 @@ void Server::run()
     // boucler sur les socket
     for (size_t i = 0; i < Sockets.size(); i++)
     {
-        std::cout << Sockets[i] << std::endl;
+        // std::cout << Sockets[i] << std::endl;
         FD_SET(Sockets[i], &read_fds);
     }
     
@@ -178,9 +212,9 @@ void Server::run()
         fd_max = std::max(fd_max, Sockets[i]);
         // std::cout << "fdmax : "<< fd_max << std::endl;
     }
-    std::cout << "Sockets.size =  : "<< Sockets.size() << std::endl;   
-    std::cout << "fdmax : "<< fd_max << std::endl;   
-    std::cout << "[Server] Set up select fd sets\n";
+    // std::cout << "Sockets.size =  : "<< Sockets.size() << std::endl;   
+    // std::cout << "fdmax : "<< fd_max << std::endl;   
+    std::cout << "\033[0;31m" " [Server] " << "\033[0m" << "Set up select fd sets\n";
 
     while (true) 
     {
@@ -204,12 +238,12 @@ void Server::run()
         // boucler number of socket 
         for (int i = 3; i <= fd_max; i++) 
         {
-            struct stat sb;
+            // struct stat sb;
             if (FD_ISSET(i, &copy_read_fds)) 
             {
                 if (CheckIsMyServer(i) == 1)
                 {
-                    std::cout << "i = "<<i<<std::endl;
+                    // std::cout << "i = "<<i<<std::endl;
                     accept_new_connection(i, read_fds, &fd_max);
                 } 
                 else 
@@ -222,30 +256,30 @@ void Server::run()
                 {
                     if(it->first == i)
                     {
-                        std::cout << "------------------------------------\n";
-                        std::cout << mapinfo[i].request.url << std::endl;
-                        std::cout << "------------------------------------\n";
+                        // std::cout << "------------------------------------\n";
+                        // std::cout << mapinfo[i].request.url << std::endl;
+                        // std::cout << "------------------------------------\n";
                         break;
                     }
                 }
-                std::cout << "************************************\n";
+                // std::cout << "************************************\n";
                 mapinfo[i].request.response.run();
-                std::cout << "************************************\n";
-                std::cout << "i == " << i << std::endl;
-                std::cout << "hna fach taykhrj " << std::endl;
+                // std::cout << "************************************\n";
+                // std::cout << "i == " << i << std::endl;
+                // std::cout << "hna fach taykhrj " << std::endl;
                 mapinfo[i].request.s = send(i,  mapinfo[i].request.response.SendResponse.c_str() + mapinfo[i].request.se, mapinfo[i].request.response.SendResponse.size() - mapinfo[i].request.se, 0);
                 mapinfo[i].request.se += mapinfo[i].request.s;
-                std::cout << "s == " << mapinfo[i].request.s << std::endl;
-                std::cout << "se == " << mapinfo[i].request.se << std::endl;
-                std::cout << "size == " << mapinfo[i].request.response.SendResponse.size() << std::endl;
+                // std::cout << "s == " << mapinfo[i].request.s << std::endl;
+                // std::cout << "se == " << mapinfo[i].request.se << std::endl;
+                // std::cout << "size == " << mapinfo[i].request.response.SendResponse.size() << std::endl;
                 // std::string newsend = mapinfo[i].request.response.SendResponse.c_str() + s;
                 if(mapinfo[i].request.se == mapinfo[i].request.response.SendResponse.size())
                 {
                     // s = send(i,  mapinfo[i].request.response.SendResponse.c_str() + s, mapinfo[i].request.response.SendResponse.size(), 0);
                     FD_CLR(i,&write_fds);
                     close(i);
-                    if (stat("./output.txt", &sb) == 0)
-                        std::remove("./output.txt");
+                    // if (stat("./output.txt", &sb) == 0)
+                    //     std::remove("./output.txt");
                     std::cout << "\033[0;35m" << "---------->>>>>CLOSE-SOCKET<<<<<-------- : " << i << "\033[0m" << std::endl;
                     mapinfo[i].request.s = 0;
                     mapinfo[i].request.se = 0;
@@ -255,8 +289,8 @@ void Server::run()
                     // s = send(i,  mapinfo[i].request.response.SendResponse.c_str() + s, mapinfo[i].request.response.SendResponse.size(), 0);
                     FD_CLR(i,&write_fds);
                     close(i);
-                    if (stat("./output.txt", &sb) == 0)
-                        std::remove("./output.txt");
+                    // if (stat("./output.txt", &sb) == 0)
+                    //     std::remove("./output.txt");
                     std::cout << "\033[0;35m" << "---------->>>>>CLOSE-SOCKET<<<<<-------- : " << i << "\033[0m" << std::endl;
                     // s = 0;
                     mapinfo[i].request.se = 0;

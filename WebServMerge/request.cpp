@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 09:55:27 by rarraji           #+#    #+#             */
-/*   Updated: 2024/05/09 10:17:58 by rarraji          ###   ########.fr       */
+/*   Updated: 2024/05/11 09:38:51 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 Request::Request()
 {
+  // response.AddContentType( );
   compareLenBody = 0;
   Get = true;
   last = true;
@@ -104,12 +105,12 @@ void Request::AddHeaderBody()
       start = 0;
     }
   }
-  std::cout << Get << std::endl;
+  // std::cout << Get << std::endl;
   if (!Get && !chunked)
   {
     // if ((pos = body.find("\r\n")) != std::string::npos)
     // {
-      std::cout << "hereeeee\n";
+      // std::cout << "hereeeee\n";
     //   new_body = body.substr(pos + 2 , body.length());;
     // }
     // else
@@ -165,7 +166,7 @@ void Request::UploadFiles()
   bool check = false;
   getline(ss,buf);
   std::string Myboundary = buf.substr(0 , buf.length() - 1);
-  std::cout << "=====================================ana hna" << std::endl;
+  // std::cout << "=====================================ana hna" << std::endl;
   while (getline(ss,buf))
   {
     size_t pos;
@@ -178,11 +179,11 @@ void Request::UploadFiles()
       else if ((pos = buf.find("name=")) != std::string::npos)
       {
         NameFile = buf.substr(pos + 6 , buf.length()); 
-        std::cout << "-->" << NameFile << std::endl;
+        // std::cout << "-->" << NameFile << std::endl;
       }
       NameFile = NameFile.substr(0 , NameFile.length() - 2);
       NameFile += '\0';
-      std::cout << NameFile << std::endl;
+      // std::cout << NameFile << std::endl;
       if ((pos = buf.find("filename=")) != std::string::npos)
         getline(ss,buf);
       if(checkImgOrText(buf))
@@ -256,7 +257,7 @@ void Request::check_req_valid()
             methode = buff;
             //error    
           }
-          std::cout << "Methode : " << buff << std::endl; 
+          // std::cout << "Methode : " << buff << std::endl; 
         }
         if (j == 1)
         {
@@ -318,13 +319,13 @@ void Request::Check_read(int socket, fd_set &read_fds, fd_set &write_fds)
         header = header.substr(0, pos + 2);
       // // if (!cgi)
       UploadFiles();
-      std::cout << "herre\n";
+      // std::cout << "herre\n";
       response.SetHeader(header);
       response.SetBody(body);
-      response.SetUrl(url);
+      response.SetUrl(url); 
       if (response.url.find(".py") != std::string::npos)
       {
-        std::cout << "hnaaaaaaaaa\n";
+        // std::cout << "hnaaaaaaaaa\n";
         response.check_cgi = true;
         Cgi cgi;
         cgi.SetHeader(header);

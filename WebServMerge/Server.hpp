@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 15:53:14 by rarraji           #+#    #+#             */
-/*   Updated: 2024/05/09 16:51:57 by rarraji          ###   ########.fr       */
+/*   Updated: 2024/05/11 09:43:17 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@
 
 class infoserv;
 
-
+// class response;
 class Server 
 {
   private:
@@ -64,6 +64,7 @@ class Server
     std::vector<int> Sockets;
     Server();
     void CreatServers();
+    // void RemplirContentType();
     int CheckIsMyServer(int nb);
     void run();
     void RemplirInfo(int socket_fd);

@@ -6,7 +6,7 @@
 #    By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/22 10:15:25 by rarraji           #+#    #+#              #
-#    Updated: 2024/05/08 15:47:21 by rarraji          ###   ########.fr        #
+#    Updated: 2024/05/10 11:03:53 by rarraji          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,11 +22,21 @@ OBJ     = $(SRC:.cpp=.o)
 RED = \033[0;31m
 GREEN = \033[0;32m
 YELLOW = \033[0;33m
+3YELLOW = \033[0;36m
 
 %.o : %.cpp Server.hpp
+	@printf "✅ ---> "
 	${CC} ${FLAGS} -c $< -o $@
 
 all: $(NAME)
+	@printf "	      _                        \n" 
+	@printf "__      _____| |__  ___  ___ _ ____   __\n"
+	@printf "\ \ /\ / / _ \ '_ \/ __|/ _ \ '__\ \ / /\n"
+	@printf " \ V  V /  __/ |_) \__ \  __/ |   \ V / \n"
+	@printf "  \_/\_/ \___|_.__/|___/\___|_|    \_/  \n"
+	@printf "           $(3YELLOW)Solix like Nginx\n"
+	@printf "\n"
+	@printf "\n"
 
 $(NAME): $(OBJ)
 	@printf "$(YELLOW) Compiling $(NAME)... \n"

@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 09:55:24 by rarraji           #+#    #+#             */
-/*   Updated: 2024/05/08 10:34:41 by rarraji          ###   ########.fr       */
+/*   Updated: 2024/05/10 19:40:19 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@
 #include <thread>
 #include "cgi.hpp"
 #include "response.hpp"
-
 
 class Request{
   private:
