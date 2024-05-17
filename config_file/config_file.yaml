@@ -1,0 +1,152 @@
+```#############################################
+#										    #
+#		THE DEFAULT CONFIGURATION FILE		#
+#										    #
+#############################################
+
+server:
+	host: 0.5.0.0
+	port: 2003
+	root: /Users/abouabra/1337/backserve/assets/server_1/
+	max_body_size: 1000000 # 1MB
+
+	# Index Page
+	index: index.html
+
+	# Error Pages
+	error_pages:
+		400: error_pages/400.html
+		403: error_pages/403.html
+		404: error_pages/404.html
+		405: error_pages/405.html
+		413: error_pages/413.html
+   
+    # Location Blocks
+	location: /
+		index: index.html
+		methods: GET | POST | HEAD
+
+	location: /site_1
+		index: index.html
+
+	location: /site_2
+		index: index.html
+
+	location: /to_server_2
+		redirect_URL: http://0.0.0.0:2004/
+	
+	location: /to_server_3
+		redirect_URL: http://0.0.0.0:2005/
+
+	location: /list
+		directory_listing: true
+		methods: GET
+
+
+server:
+	host: 0.6.0.0
+	port: 2004
+	root: /Users/abouabra/1337/backserve/assets/server_2/
+	index: index.html
+	max_body_size: 20000000 # 20MB
+
+	error_pages:
+		400: error_pages/400.html
+		403: error_pages/403.html
+		404: error_pages/404.html
+		500: error_pages/500.html
+		502: error_pages/502.html
+		504: error_pages/504.html
+
+	# cgi:
+	# 	.py: /usr/bin/python3
+	# 	.sh: /bin/bash
+	# 	.php: /usr/bin/php
+
+	location: /
+		index: index.html
+		methods: GET
+
+	location: /cgi
+		index: index.html
+		methods: GET
+
+	location: /to_server_1
+		redirect_URL: http://0.0.0.0:2003/
+	
+	location: /to_server_3
+		redirect_URL: http://0.0.0.0:2005/
+
+	location: /cgi/run-python
+		index: GET_Default.py
+		methods: GET | POST
+
+	location: /cgi/run-bash
+		index: GET_Default.sh
+		methods: GET | POST
+
+	location: /cgi/run-php
+		index: GET_Default.php
+		methods: GET | POST
+
+	location: /cgi/delete_cgi
+		index: delete.py
+		methods: GET | DELETE
+
+	location: /upload
+		index: upload.html
+		methods: POST | GET
+		upload_dir: /Users/abouabra/1337/backserve/assets/server_2/upload/upload_dir/
+
+	location: /upload/upload_dir
+		directory_listing: true
+		methods: GET | DELETE
+
+server:
+	host: 0.7.0.0
+	port: 2005
+	root: /Users/abouabra/1337/backserve/assets/server_3/
+	max_body_size: 1000000 # 1MB
+
+	index: main.py
+
+	error_pages:
+		400: error_pages/400.html
+		403: error_pages/403.html
+		404: error_pages/404.html
+		500: error_pages/500.html
+		502: error_pages/502.html
+		504: error_pages/504.html
+
+	# cgi:
+	# 	.py: /usr/bin/python3
+
+	location: /
+		root: /Users/abouabra/1337/backserve/assets/server_3/home/
+		index: home.py
+		methods: GET
+
+	location: /login
+		index: login.py
+		methods: GET | POST
+
+	location: /logout
+		index: logout.py
+		methods: GET
+	
+	location: /switch
+		index: switch.py
+		methods: GET
+
+
+
+	# dummy location block
+	# it has all the possible keys
+
+	# location: /path/to/location3
+	# 	root: /path/to/root/
+	# 	index: index.html
+	# 	methods: GET | POST | DELETE | HEAD
+	# 	redirect_URL: /path/to/redirect
+	# 	directory_listing: false
+	# 	upload_dir: /Users/abouabra/1337/backserve/assets/server_2/upload/upload_dir/```
