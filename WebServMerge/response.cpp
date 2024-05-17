@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 10:17:38 by rarraji           #+#    #+#             */
-/*   Updated: 2024/05/17 10:42:09 by rarraji          ###   ########.fr       */
+/*   Updated: 2024/05/17 11:18:58 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -361,27 +361,46 @@ void Response::run()
                         std::cout << "new_url : "<< new_url << std::endl;
                         if(check_cgi == true)
                             new_url = url;
-                        std::ifstream file(new_url.c_str());
-                        if (!file.is_open()) 
+                        if (access(new_url.c_str(), R_OK) != 0)
                         {
-                            file.close();
-                            std::string tmp;
-                            tmp = "/Users/rarraji/Desktop/prj/WebServMerge/pages/ErrorPages/notFound.html";
-                            std::ifstream file(tmp);
-                            // check = 0;
-                            if (!file.is_open())
-                            {
-                            std::cerr << "[Server 404] Impossible d'ouvrir le fichier here" << "\n";
-                            }
-                            // std::cerr << "[Server 1] Impossible d'ouvrir le fichier here" << "\n";
-                            buffer << file.rdbuf();
-                            file.close();
-                        }
+                                std::cout << "forbiden R_OFF" << std::endl;
+                                std::string tmp;
+                                tmp = "/Users/rarraji/Desktop/prj/WebServMerge/pages/ErrorPages/forbidden.html";
+                                std::ifstream file(tmp);
+                                // check = 0;
+                                if (!file.is_open())
+                                {
+                                std::cerr << "[Server 404] Impossible d'ouvrir le fichier here" << "\n";
+                                }
+                                // std::cerr << "[Server 1] Impossible d'ouvrir le fichier here" << "\n";
+                                buffer << file.rdbuf();
+                                file.close();
+                        }   
                         else
                         {
-                            buffer << file.rdbuf();
-                            file.close();
-                            SendResponse += AddContentType();
+                            std::ifstream file(new_url.c_str());
+                            if (!file.is_open()) 
+                            {
+                                file.close();
+                                std::string tmp;
+                                tmp = "/Users/rarraji/Desktop/prj/WebServMerge/pages/ErrorPages/notFound.html";
+                                std::ifstream file(tmp);
+                                // check = 0;
+                                if (!file.is_open())
+                                {
+                                std::cerr << "[Server 404] Impossible d'ouvrir le fichier here" << "\n";
+                                }
+                                // std::cerr << "[Server 1] Impossible d'ouvrir le fichier here" << "\n";
+                                buffer << file.rdbuf();
+                                file.close();
+                            }
+                            else
+                            {
+                                buffer << file.rdbuf();
+                                file.close();
+                                SendResponse += AddContentType();
+                            }
+                            
                         }
                         // SendResponse += "Content-Type: text/html\r\n";                    
                     }
