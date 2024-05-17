@@ -1,15 +1,15 @@
-```#############################################
-#										    #
-#		THE DEFAULT CONFIGURATION FILE		#
-#										    #
+#############################################
+#										                        #
+#		   THE DEFAULT CONFIGURATION FILE		    #
+#										                        #
 #############################################
 
 
 
 server:
 	host: 0.0.0.0
-	port: 2007
-	root: /Users/rarraji/Desktop/lastWeb/Server/pages/
+	port: 2001
+	root: /Users/rarraji/Desktop/prj/WebServMerge/pages
 	max_body_size: 1000000 # 1MB
 
 	# Index Page
@@ -25,30 +25,25 @@ server:
    
     # Location Blocks
 	location: /
-		index: index.html
-		methods: GET | POST | HEAD
+		index: /index.html
+		methods: GET | POST
 
-	location: /site_1
-		index: index.html
-
-	location: /site_2
-		index: index.html
-
-	location: /to_server_2
-		redirect_URL: http://0.0.0.0:2004/
-	
-	location: /to_server_3
-		redirect_URL: http://0.0.0.0:2005/
-
-	location: /list
+	location: /ErrorPages/
 		directory_listing: true
-		methods: GET
+		methods: GET | DELETE
 
+	location: /web1/
+		index: /index.html
+		methods: DELETE | POST
+
+	location: /site_2/
+		redirect_URL: /
+		index: /index.html
 
 server:
 	host: 0.0.0.0
-	port: 2009
-	root: /Users/rarraji/Desktop/lastWeb/Server/pages/
+	port: 2002
+	root: /Users/rarraji/Desktop/lastWeb/Server/pages
 	index: index.html
 	max_body_size: 20000000 # 20MB
 
@@ -94,7 +89,7 @@ server:
 	location: /upload
 		index: upload.html
 		methods: POST | GET
-		upload_dir: /Users/abouabra/1337/backserve/assets/server_2/upload/upload_dir/
+		upload_dir: /Users/rarraji/Desktop/lastWeb/Server/pages/
 
 	location: /upload/upload_dir
 		directory_listing: true
@@ -102,7 +97,7 @@ server:
 
 server:
 	host: 0.0.0.0
-	port: 2006
+	port: 2003
 	root: /Users/rarraji/Desktop/lastWeb/Server/pages/
 	max_body_size: 1000000 # 1MB
 
@@ -116,11 +111,9 @@ server:
 		502: error_pages/502.html
 		504: error_pages/504.html
 
-	# cgi:
-	# 	.py: /usr/bin/python3
 
 	location: /
-		root: /Users/abouabra/1337/backserve/assets/server_3/home/
+		root: /Users/rarraji/1337/backserve/assets/server_3/home/
 		index: home.py
 		methods: GET
 
@@ -135,16 +128,3 @@ server:
 	location: /switch
 		index: switch.py
 		methods: GET
-
-
-
-	# dummy location block
-	# it has all the possible keys
-
-	# location: /path/to/location3
-	# 	root: /path/to/root/
-	# 	index: index.html
-	# 	methods: GET | POST | DELETE | HEAD
-	# 	redirect_URL: /path/to/redirect
-	# 	directory_listing: false
-	# 	upload_dir: /Users/abouabra/1337/backserve/assets/server_2/upload/upload_dir/```

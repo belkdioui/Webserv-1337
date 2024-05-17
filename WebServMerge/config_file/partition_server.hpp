@@ -29,4 +29,5 @@ class partition_server{
         std::string get_index();
         std::string get_error_pages(std::string);
         location_param get_location(std::string);
+        std::string get_location_first(std::string index);
 };

@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 15:53:14 by rarraji           #+#    #+#             */
-/*   Updated: 2024/05/11 09:43:17 by rarraji          ###   ########.fr       */
+/*   Updated: 2024/05/16 10:31:47 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ class Server
     // int server_socket_2;
     // int server_socket_3;
     std::vector<ParseServer> serverSockets;
-    int create_server_socket(int port, std::string ip);
+    int create_server_socket(int port, std::string ip, std::string root, std::string host);
     void accept_new_connection(int listener_socket, fd_set &read_fds, int *fd_max);
     void read_data_from_socket(int socket, fd_set &read_fds, fd_set &write_fds);
     void parse_req(std::string buffer);
@@ -67,7 +67,8 @@ class Server
     // void RemplirContentType();
     int CheckIsMyServer(int nb);
     void run();
-    void RemplirInfo(int socket_fd);
+    void RemplirInfo(int socket_fd, std::string root, std::string host);
+    void checkResponse(int socket_fd, std::string host, std::string port);
     std::map <int, infoserv> mapinfo;
     
 };

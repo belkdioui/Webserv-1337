@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/24 10:16:42 by rarraji           #+#    #+#             */
-/*   Updated: 2024/05/11 09:39:26 by rarraji          ###   ########.fr       */
+/*   Updated: 2024/05/12 14:57:47 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ class infoserv
     std::string index;
     std::string root;
     int port;
-    int MaxBodySize;
+    std::string MaxBodySize;
     location location;
     Request request;
     void SetContentType();

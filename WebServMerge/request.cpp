@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 09:55:27 by rarraji           #+#    #+#             */
-/*   Updated: 2024/05/11 09:38:51 by rarraji          ###   ########.fr       */
+/*   Updated: 2024/05/16 14:27:22 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,7 +210,7 @@ void Request::checkQuery()
   std::string tmp;
   std::vector<std::string> MyQeury;
   size_t pos;
-  std::cout << "URL : " << url << std::endl;
+  std::cout << "**-->URL : " << url << std::endl;
   if((pos = url.find("?")) != std::string::npos)
   {
     str = url.substr(pos+1, url.length());
@@ -232,7 +232,20 @@ void Request::checkQuery()
   std::cout << "-------------------------------------------------------" << std::endl; 
 }
 
-
+void Request::SaveHost_Port(std::string tmp_host)
+{
+  std::stringstream ss(tmp_host);
+  std::string buff;
+  while(getline(ss, buff))
+  {
+    host = buff.substr(buff.find("Host:") + 6, buff.length());
+    port = host.substr(host.find(":") + 1, host.length());
+    host = host.substr(0, host.find(":"));
+    // std::cout << host << std::endl;
+    // std::cout << port << std::endl;
+    break;
+  }
+}
 void Request::check_req_valid()
 {
   // read line par line 
@@ -255,7 +268,7 @@ void Request::check_req_valid()
           if(buff.compare("GET") != 0 && buff.compare("POST") != 0 && buff.compare("DELETE") == 0)
           {
             methode = buff;
-            //error    
+            // response error in respnose 405
           }
           // std::cout << "Methode : " << buff << std::endl; 
         }
@@ -264,11 +277,13 @@ void Request::check_req_valid()
           url = buff;
           //check URL !!!!!!
           checkQuery();
+          // if error is a probleme 414
         }
         if (j == 2)
         {
           if (buff.compare("HTTP/1.1") != 0)
           {
+            // response with 505
             // error
           }
         }  
@@ -279,8 +294,11 @@ void Request::check_req_valid()
         j++;
       }
     }
-    host = header.substr(header.find("Host:") + 6, header.find("\n") + 1);
-    // check lines 2 ...
+    host = header.substr(header.find("Host:") , header.length());
+    host = host.substr(0 , host.find("\r\n"));
+    SaveHost_Port(host);
+    // check Maxbodysize();
+    // check is req valide or not if error response 400
     i++;
   }
 }
@@ -332,8 +350,8 @@ void Request::Check_read(int socket, fd_set &read_fds, fd_set &write_fds)
         cgi.SetBody(body);
         cgi.run();  
       }
-      else
-        response.run();
+      // else
+      //   response.run();
       request = "";
       FD_CLR(socket, &read_fds);
       FD_SET(socket, &write_fds);

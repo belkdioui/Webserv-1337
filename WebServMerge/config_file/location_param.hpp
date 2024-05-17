@@ -9,6 +9,7 @@ class location_param{
         std::string directory_listing;
         std::string upload_dir;
     public:
+        std::map<std::string, bool> MapMethods;
         location_param();
         ~location_param();
         void set_redirect_url(std::string);

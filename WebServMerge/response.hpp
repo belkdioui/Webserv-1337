@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 10:17:36 by rarraji           #+#    #+#             */
-/*   Updated: 2024/05/11 09:44:14 by rarraji          ###   ########.fr       */
+/*   Updated: 2024/05/17 09:49:37 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,18 @@ class Response
   public:
     bool check_body;
     bool check_cgi;
+    bool redur;
     int socket;
     std::string body;
+    std::string root;
     std::string header;
     std::string code;
     std::string methode;
     std::string url;
     std::string SendResponse;
+    std::string new_redur;
+    bool directory_listing;
     std::map <std::string , std::string> ContentType;
-
     Response();
     ~Response();
     std::string generateHTML(const char* path);
@@ -62,5 +65,6 @@ class Response
     void run();
     std::string AddContentType();
     void RemplirContentType();
+    void checkResponse(int socket_fd, std::string host, std::string port);
 
 };

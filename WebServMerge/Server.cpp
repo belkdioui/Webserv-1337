@@ -6,12 +6,13 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 15:53:48 by rarraji           #+#    #+#             */
-/*   Updated: 2024/05/11 09:43:30 by rarraji          ###   ########.fr       */
+/*   Updated: 2024/05/17 10:36:00 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Server.hpp"
 #include <thread>
+#define PATH "/Users/rarraji/Desktop/prj/WebServMerge/pages"
 
 Server::Server() 
 {
@@ -75,7 +76,8 @@ void Server::CreatServers()
     // this->servers.size() = 3;
     for (size_t i = 0; i < this->servers.size(); i++)
     {
-        int server_socket_1 = create_server_socket(convertStringToInt(this->servers[i].get_port()), (this->servers[i].get_host()));
+        // std::cout << "here\n";
+        int server_socket_1 = create_server_socket(convertStringToInt(this->servers[i].get_port()), this->servers[i].get_host(), this->servers[i].get_root(), this->servers[i].get_host());
         Sockets.push_back(server_socket_1);
     }
 }
@@ -83,10 +85,15 @@ void Server::CreatServers()
 
 
 
-void Server::RemplirInfo(int socket_fd)
+void Server::RemplirInfo(int socket_fd, std::string root, std::string host)
 {
     infoserv info;
-    // set root
+    // std::cout << "root: " << root << std::endl;
+    // std::cout << "host: " << host << std::endl;
+    info.root = root;
+    info.host = host;
+    // info.errorPage = this->servers[socket_fd].get_error_pages()
+    // info.MaxBodySize = this->servers[socket_fd].get_max_body_size();
     // set host
     // set port
     // set location
@@ -97,7 +104,7 @@ void Server::RemplirInfo(int socket_fd)
 }
 
 // add ip addresse;
-int Server::create_server_socket(int port, std::string ip) 
+int Server::create_server_socket(int port, std::string ip, std::string root, std::string host) 
 {
     struct sockaddr_in sa;
     int socket_fd;
@@ -123,7 +130,7 @@ int Server::create_server_socket(int port, std::string ip)
         std::cerr << "[Server] Socket error: " << strerror(errno) << std::endl;
         return (-1);
     }
-    RemplirInfo(socket_fd);
+    RemplirInfo(socket_fd, root, host);
     // mapinfo.insert(std::make_pair(socket_fd, info));
     std::cout << "\033[0;31m" " [Server] " << "\033[0m" << "Created server socket fd: " << socket_fd << std::endl;
     int on = 1;
@@ -179,6 +186,113 @@ int Server::CheckIsMyServer(int nb)
   }
   return(0);
 //   exit(1);
+}
+
+void Server::checkResponse(int socket, std::string host , std::string port)
+{
+    bool check_red = false;
+    std::cout << "host: " << host  << std::endl;
+    std::cout << "port: " << port  << std::endl;
+    std::cout << "Socket: " << socket  << std::endl;
+    for (size_t i = 0; i < this->servers.size(); i++)
+    {
+        // check man server 
+        if(this->servers[i].get_host().compare(host) == 0 && this->servers[i].get_port().compare(port) == 0)
+        {
+            std::cout << "url : " << mapinfo[socket].request.response.url << std::endl;
+            std::cout << "root + url : " <<  this->servers[i].get_root() + mapinfo[socket].request.response.url << std::endl;
+
+            //check is url is location or not
+            if(this->servers[i].get_location_first(mapinfo[socket].request.response.url).compare(mapinfo[socket].request.response.url) == 0) 
+            {
+              check_red = true;
+              std::cout << "DONE IS LOCATION" << std::endl;
+            }
+            else
+              std::cout << "ISN'T LOCATION" << std::endl;
+            //check url is valide in location;
+        }
+        // check is dir or file 
+        struct stat fileStat;
+        std::string tmp1;
+        if (mapinfo[socket].request.response.url.find(this->servers[i].get_root()) == std::string::npos) // cheak url isgisila root
+            tmp1 = this->servers[i].get_root() + mapinfo[socket].request.response.url;
+        else
+            tmp1 = mapinfo[socket].request.response.url;
+            
+        std::cout << "check_red : " << check_red << std::endl;
+        
+        if (stat(tmp1.c_str(), &fileStat) == 0) // checkdir
+        {
+            int i = 0;
+            if (S_ISDIR(fileStat.st_mode))
+            {
+                std::cout << "dossier\n";
+                std::string tmp  = tmp1;
+                std::cout << "tmp : " << tmp  << std::endl;
+
+                //check_if_location_end "/"
+                if (tmp[tmp.length() - 1] == '/' && check_red == true)
+                    std::cout << "redirect_URL : " << this->servers[i].get_location(mapinfo[socket].request.response.url).get_redirect_url() << std::endl;
+                if (tmp[tmp.length() - 1] != '/')
+                {
+                    mapinfo[socket].request.response.url += '/';
+                    if(check_red == true)
+                      std::cout << "redirect_URL : " << this->servers[i].get_location(mapinfo[socket].request.response.url).get_redirect_url() << std::endl;
+                    mapinfo[socket].request.response.redur = true;
+                    mapinfo[socket].request.response.new_redur = mapinfo[socket].request.response.url;
+                    std::cout << "new_url_to_red : " << mapinfo[socket].request.response.new_redur << std::endl;
+                    i = 1;
+                    break;
+                    
+                }
+                //check red url 
+                else if (i == 0 && this->servers[i].get_location(mapinfo[socket].request.url).get_redirect_url().length() >= 1)
+                {
+                    std::cout << "redirect_URL : " << this->servers[i].get_location(mapinfo[socket].request.url).get_redirect_url() << std::endl;
+                    mapinfo[socket].request.response.redur = true;
+                    mapinfo[socket].request.response.new_redur = this->servers[i].get_location(mapinfo[socket].request.url).get_redirect_url();
+                    std::cout << "new_url_to_red : " << mapinfo[socket].request.response.new_redur << std::endl;
+                    i = 1;
+                    break;
+                    //check_redirect_URL
+                }
+                else
+                    mapinfo[i].request.response.redur = false;
+                // for (std::map<std::string, bool>::iterator it = this->servers[i].get_location(mapinfo[socket].request.url).MapMethods.begin(); it != this->servers[i].get_location(mapinfo[socket].request.url).MapMethods.end(); ++it)
+                // {
+                //     //check methodes
+                // }
+                if (i == 0 && this->servers[i].get_location(mapinfo[socket].request.url).get_index().length() > 1)
+                {
+                //    mapinfo[socket].request.response.root = this->servers[i].get_root() + mapinfo[socket].request.url;
+                   mapinfo[socket].request.response.url = this->servers[i].get_root() + this->servers[i].get_location_first(mapinfo[socket].request.url) + this->servers[i].get_location(mapinfo[socket].request.url).get_index();
+                    // this->servers[i].get_location(mapinfo[socket].request.url)
+                    std::cout << "index To serve : " << mapinfo[socket].request.response.url << std::endl;
+                    i = 1;
+                    break;
+                }
+                std::cout << "directory_listing :" << this->servers[i].get_location(mapinfo[socket].request.url).get_directory_listing() << std::endl;
+                if (i == 0 && this->servers[i].get_location(mapinfo[socket].request.url).get_directory_listing().compare("true") == 0)
+                {
+                  std::cout << "DONE directory_listing" << std::endl;  
+                  mapinfo[socket].request.response.url = this->servers[i].get_root() + mapinfo[socket].request.response.url;
+                  mapinfo[socket].request.response.directory_listing = true;
+                  break;
+                }
+                break;
+            }
+            else
+            {
+                mapinfo[socket].request.response.url = this->servers[i].get_root() + mapinfo[socket].request.url;
+                std::cout << "FILE : " << mapinfo[socket].request.response.url << std::endl;
+                std::cout << "File Done" << std::endl;
+                break;    
+            }
+        }
+        
+    }
+    // exit(1);
 }
 
 void Server::run() 
@@ -262,7 +376,9 @@ void Server::run()
                         break;
                     }
                 }
-                // std::cout << "************************************\n";
+                std::cout << "************************************\n";
+                checkResponse(i, mapinfo[i].request.host, mapinfo[i].request.port);
+                // exit(1);
                 mapinfo[i].request.response.run();
                 // std::cout << "************************************\n";
                 // std::cout << "i == " << i << std::endl;

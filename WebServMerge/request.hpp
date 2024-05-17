@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 09:55:24 by rarraji           #+#    #+#             */
-/*   Updated: 2024/05/10 19:40:19 by rarraji          ###   ########.fr       */
+/*   Updated: 2024/05/12 15:33:51 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ class Request{
     std::string url;
     std::string methode;
     std::string host;
+    std::string port;
     bool check_cgi;
     long long s;
     size_t se;
@@ -76,6 +77,7 @@ class Request{
     void check_req_valid();
     void checkQuery();
     void UploadFiles();
+    void SaveHost_Port(std::string tmp_host);
     void CreatFiles(std::string NameFile, std::string buf, bool check);
     Response response;
 };

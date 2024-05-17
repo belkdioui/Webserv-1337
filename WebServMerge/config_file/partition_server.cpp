@@ -81,3 +81,8 @@ location_param partition_server::get_location(std::string index)
     std::map<std::string, location_param>::iterator it = location.find(index);
     return it->second;
 }
+std::string partition_server::get_location_first(std::string index)
+{
+    std::map<std::string, location_param>::iterator it = location.find(index);
+    return it->first;
+}
