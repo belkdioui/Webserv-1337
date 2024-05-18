@@ -1,3 +1,5 @@
+#ifndef PARTITION_SERVER_HPP
+#define PARTITION_SERVER_HPP
 #include <iostream>
 #include <map>
 #include "location_param.hpp"
@@ -30,3 +32,5 @@ class partition_server{
         std::string get_error_pages(std::string);
         location_param get_location(std::string);
 };
+
+#endif

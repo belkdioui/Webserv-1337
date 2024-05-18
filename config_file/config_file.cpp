@@ -1,6 +1,83 @@
 #include "config_file.hpp"
 #include <fstream>
 #include <sstream>
+#include <regex>
+
+bool config_file::check_path(std::string path) {
+    if (path.empty()) {
+        return false;
+    }
+    const size_t maxPathLength = 4096;
+    if (path.length() > maxPathLength) {
+        return false;
+    }
+    std::regex forbiddenChars("[\\0]");
+    if (std::regex_search(path, forbiddenChars)) {
+        return false;
+    }
+    if (path[0] != '/' && path.find('/') == std::string::npos) {
+        return false;
+    }
+    return true;
+}
+
+void config_file::print_error(std::string str, std::string str1)
+{
+    std::cout<<str<<std::endl;
+    std::cout<<str1<<std::endl;
+    exit(1);
+}
+
+int config_file::convert_string_to_int(std::string str)
+{
+    int i = 0;
+    while(str[i])
+    {
+        if(!(str[i] >= 48 && str[i] <= 57))
+        {
+            std::cout<<str[i]<<std::endl;
+            print_error("error in this part : ", str);
+        }
+        i++;
+    }
+    std::stringstream ss(str);
+    int num;
+    ss>>num;
+    return (num);
+}
+
+int config_file::count_alphabetic_and_check_is_digits(char c, std::string str, int number, int min , int max)
+{
+    std::string word;
+    // std::cout<<"*"<<str<<"*"<<std::endl;
+    for (size_t i = 0; i < str.size() && number > 0; i++)
+    {
+        if(str[i] == c)
+            number--;
+    }
+    if(number > 0)
+    {
+        std::cout<<"here1"<<std::endl;
+        print_error("error in this part : ", str);
+    }
+    std::stringstream ss(str);
+
+    while(!ss.eof())
+    {
+        int num;
+        getline(ss, word, c);
+        num = convert_string_to_int(word);
+        if (min >= 0 && max >= 0)
+        {
+            if(num < min || num > max)
+            {
+                std::cout<<"here2"<<std::endl;
+                print_error("error in this part : ", str);
+            }
+        }
+    }
+    return(0);  
+}
 
 std::vector<partition_server> config_file::get_servers()
 {
@@ -12,8 +89,8 @@ int cal_num_of_server(std::vector<std::string> lines_of_conf)
     int num = 0;
     for (std::vector<std::string>::iterator it= lines_of_conf.begin(); it != lines_of_conf.end(); ++it)
     {
-            if (*it == "server:")
-                num++;
+        if (*it == "server:")
+            num++;
     }
     return (num);
 }
@@ -25,7 +102,10 @@ int check_location(std::string index, std::string value, location_param &loc)
     else if (index == "index:")
         loc.set_index(value);
     else if (index == "methods:")
+    {
+        std::cout<<value<<std::endl;
         loc.set_methods(value);
+    }
     else if (index == "upload_dir:")
         loc.set_upload_dir(value);
     else if (index == "directory_listing:")
@@ -40,19 +120,35 @@ int config_file::check_and_store_data(partition_server *new_server, std::vector<
     std::stringstream ss(*it);
     std::string index;
     std::string value;
+    std::getline(ss, index, ':');
+    std::getline(ss, value);
+    index.erase(0, index.find_first_not_of(" \t"));
+    value.erase(0, value.find_first_not_of(" \t"));
 
-    ss>>index>>value;
-    if (index == "host:")
+    if (index == "host")
+    {
+        count_alphabetic_and_check_is_digits('.', value, 3, 0, 255);
         new_server->set_host(value);
-    else if (index == "port:")
+    }
+    else if (index == "port")
+    {
+        count_alphabetic_and_check_is_digits('.', value, -1, -1, -1);
         new_server->set_port(value);
-    else if (index == "root:")
+    }
+    else if (index == "root")
+    {
         new_server->set_root(value);
-    else if (index == "max_body_size:")
+    }
+    else if (index == "max_body_size")
+    {
+        count_alphabetic_and_check_is_digits('.', value, -1, 0, 21000000);
         new_server->set_max_body_size(value);
-    else if (index == "index:")
+    }
+    else if (index == "index")
+    {
         new_server->set_index(value);
-    else if (index == "error_pages:")
+    }
+    else if (index == "error_pages")
     {
         if(value.empty())
         {
@@ -60,7 +156,7 @@ int config_file::check_and_store_data(partition_server *new_server, std::vector<
             std::stringstream se(*it);
             se>>index>>value;
             new_server->set_error_pages(index, value);
-            while(index == "400:" || index == "403:" || index == "404:" || index == "405:" || index == "413:" || index == "\n")
+            while(index == "400:" || index == "403:" || index == "404:" || index == "405:" || index == "413:" || index == "500:" || index == "502:" || index == "504:" || index == "\n")
             {
                 it++;
                 se.clear();
@@ -106,18 +202,24 @@ std::vector<partition_server> config_file::split_servers(std::vector<std::string
             {
                 partition_server new_server;
                 it++;
-                while(it != lines_of_conf.end() && !(*it).empty() && *(it + 1) != "server:")
+                while(it != lines_of_conf.end() && *(it + 1) != "server:")
                 {
                     check_and_store_data(&new_server, it);                    
-                        ++it;
+                    ++it;
                 }
                 if (new_server.get_max_body_size().empty())
                     new_server.set_max_body_size("100000");
                 servers.push_back(new_server);
                 if(it == lines_of_conf.end())
+                {
                     return servers;
+                }
             }
         }
+    }
+    else
+    {
+        std::cout<<"error in this part "<<std::endl;
     }
     return servers;
 }
