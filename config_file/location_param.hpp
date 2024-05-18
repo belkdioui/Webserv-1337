@@ -1,10 +1,18 @@
+#ifndef LOCATION_PARAM_HPP
+#define LOCATION_PARAM_HPP
+
 #include <map>
 #include <iostream>
+#include <sstream>
+// #include "config_file.hpp"
 
-class location_param{
+// class config_file;
+
+class location_param
+{
     private:
         std::string redirect_url;
-        std::string methods;
+        std::map<std::string, bool> methods;
         std::string index;
         std::string directory_listing;
         std::string upload_dir;
@@ -17,8 +25,10 @@ class location_param{
         void set_directory_listing(std::string);
         void set_upload_dir(std::string);
         std::string get_redirect_url();
-        std::string get_methods();
+        bool get_methods(std::string key);
         std::string get_index();
         std::string get_directory_listing();
         std::string get_upload_dir();
 };
+
+#endif

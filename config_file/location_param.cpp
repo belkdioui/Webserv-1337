@@ -1,5 +1,12 @@
 #include "location_param.hpp"
 
+void fun_print_error(std::string str, std::string str1)
+{
+    std::cout<<str<<std::endl;
+    std::cout<<str1<<std::endl;
+    exit(1);
+}
+
 location_param::location_param()
 {
 
@@ -17,7 +24,22 @@ void location_param::set_redirect_url(std::string Redirect_url)
 
 void location_param::set_methods(std::string Methods)
 {
-    methods = Methods;
+    std::string word;
+    std::stringstream ss(Methods);
+    // std::cout<<Methods<<std::endl;
+    while (!ss.eof())
+    {
+        std::getline(ss, word,  '|');
+        if(word == "GET")
+            methods[word] = true;
+        else if (word == "POST")
+            methods[word] = true;
+        else if (word == "DELETE")
+            methods[word] = true;
+        else
+            fun_print_error("error in this part : ", Methods);
+    }
+    
 }
 
 void location_param::set_index(std::string Index)
@@ -40,9 +62,13 @@ std::string location_param::get_redirect_url()
     return redirect_url;
 }
 
-std::string location_param::get_methods()
+bool location_param::get_methods(std::string key)
 {
-    return methods;
+    // std::cout<<key<<std::endl;
+    std::map<std::string, bool>::iterator it = methods.find(key);
+    if(it == methods.end())
+        return false;
+    return it->second;
 }
 
 std::string location_param::get_index()

@@ -5,16 +5,16 @@
 #############################################
 
 server:
-	host: 0.5.0.0
+	host: 0.255.0.0
 	port: 2003
 	root: /Users/abouabra/1337/backserve/assets/server_1/
-	max_body_size: 1000000 # 1MB
+	max_body_size: 1000000
 
 	# Index Page
 	index: index.html
 
 	# Error Pages
-	error_pages:
+	error_pages:          
 		400: error_pages/400.html
 		403: error_pages/403.html
 		404: error_pages/404.html
@@ -48,7 +48,7 @@ server:
 	port: 2004
 	root: /Users/abouabra/1337/backserve/assets/server_2/
 	index: index.html
-	max_body_size: 20000000 # 20MB
+	max_body_size: 20000000
 
 	error_pages:
 		400: error_pages/400.html
@@ -89,7 +89,7 @@ server:
 		index: GET_Default.php
 		methods: GET | POST
 
-	location: /cgi/delete_cgi
+	location: /cgi/delete_cgi/
 		index: delete.py
 		methods: GET | DELETE
 
@@ -106,13 +106,13 @@ server:
 	host: 0.7.0.0
 	port: 2005
 	root: /Users/abouabra/1337/backserve/assets/server_3/
-	max_body_size: 1000000 # 1MB
+	max_body_size: 1000000
 
 	index: main.py
 
 	error_pages:
 		400: error_pages/400.html
-		403: error_pages/403.html
+		# 403: error_pages/403.html
 		404: error_pages/404.html
 		500: error_pages/500.html
 		502: error_pages/502.html
