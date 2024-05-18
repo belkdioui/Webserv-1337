@@ -1,0 +1,9 @@
+[0;31m [Server] [0mCreated server socket fd: 3
+[0;31m [Server] [0mBound socket to port [0;34m2001[0m
+[0;31m [Server] [0mListening on port [0;34m2001[0m
+[0;31m [Server] [0mCreated server socket fd: 4
+[0;31m [Server] [0mBound socket to port [0;34m2002[0m
+[0;31m [Server] [0mListening on port [0;34m2002[0m
+[0;31m [Server] [0mCreated server socket fd: 5
+[0;31m [Server] [0mBound socket to port [0;34m2003[0m
+[0;31m [Server] [0mListening on port [0;34m2003[0m

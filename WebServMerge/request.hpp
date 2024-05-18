@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 09:55:24 by rarraji           #+#    #+#             */
-/*   Updated: 2024/05/12 15:33:51 by rarraji          ###   ########.fr       */
+/*   Updated: 2024/05/17 17:44:48 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@
 class Request{
   private:
     std::string request;
+    std::string l3mara;
+    std::string new_3mara;
     char buffer[2048];
     int body_lenght;
     bool chunked;
@@ -50,6 +52,7 @@ class Request{
     int compareLenBody;
     int header_len;
     int start;
+    int check_l3mara;
     
     // bool cgi;
   public:

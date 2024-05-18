@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 10:17:38 by rarraji           #+#    #+#             */
-/*   Updated: 2024/05/17 11:18:58 by rarraji          ###   ########.fr       */
+/*   Updated: 2024/05/18 15:45:46 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -324,7 +324,7 @@ void Response::run()
                     }
                     else if (url.find(".jpg") != std::string::npos)
                     {
-                        std::cout << "->new_url : "<< new_url << std::endl;
+                        std::cout << "---->new_url : "<< new_url << std::endl;
                         std::ifstream file(new_url.c_str(), std::ios::binary);
                         if (!file.is_open()) 
                         {
@@ -338,7 +338,7 @@ void Response::run()
                     }
                     else if (url.compare("/images/vedeo.mp4") == 0)
                     {
-                        std::cout << "new_url : "<< new_url << std::endl;
+                        std::cout << "---->new_url : "<< new_url << std::endl;
                         std::ifstream file(new_url.c_str(), std::ios::binary);
                         if (!file.is_open()) 
                         {
@@ -358,7 +358,7 @@ void Response::run()
                     }
                     else
                     {
-                        std::cout << "new_url : "<< new_url << std::endl;
+                        std::cout << "---->new_url : "<< new_url << std::endl;
                         if(check_cgi == true)
                             new_url = url;
                         if (access(new_url.c_str(), R_OK) != 0)
@@ -379,6 +379,8 @@ void Response::run()
                         else
                         {
                             std::ifstream file(new_url.c_str());
+                                                    std::cout << "---->new_url : "<< new_url << std::endl;
+
                             if (!file.is_open()) 
                             {
                                 file.close();
