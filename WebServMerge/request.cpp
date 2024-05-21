@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 09:55:27 by rarraji           #+#    #+#             */
-/*   Updated: 2024/05/16 14:27:22 by rarraji          ###   ########.fr       */
+/*   Updated: 2024/05/18 14:31:40 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ Request::Request()
 {
   // response.AddContentType( );
   compareLenBody = 0;
+  check_l3mara = 0;
   Get = true;
   last = true;
   start = 0;
@@ -60,10 +61,12 @@ void Request::CheckChunked()
 
 int hexStringToDecimal(const std::string& hexString) 
 {
+    // std::cout << "hna -- > " << hexString << std::endl;
     std::stringstream ss;
     ss << std::hex << hexString; // Utiliser std::hex pour indiquer que la chaîne est hexadécimale
     int decimalValue;
     ss >> decimalValue; // Convertit la chaîne hexadécimale en décimal
+    // std::cout << "convert int : "<< decimalValue << std::endl;
     return decimalValue;
 }
 
@@ -87,9 +90,13 @@ void Request::AddHeaderBody()
   {
     CheckChunked();
     int nb = 0;
+    int i = 0;
     while(true && chunked)
     {
       std::stringstream ss(body);
+      // std::cout << "***> " << std::endl;
+      // exit(1);
+      // std::cout << "***> " << std::endl;
       getline(ss, num_one, '\n');
       // getline(ss, num_one, '\r');
       // std::cout << "----->" << num_one << std::endl;
@@ -98,11 +105,11 @@ void Request::AddHeaderBody()
       nb =  hexStringToDecimal(num_one);
       body = body.substr(body.find("\n") + 1, body.length());
       new_body += body.substr(start, nb);
-      // std::cout << "***> " << std::endl;
-      // std::cout << new_body  << std::endl;
-      // std::cout << "***> " << std::endl;
-      RegContent(nb);
+      body = body.substr(nb + 2, body.length());
+      // std::cout << "ilkm ghid\n";
+      // RegContent(nb);
       start = 0;
+      i++;
     }
   }
   // std::cout << Get << std::endl;
@@ -324,14 +331,34 @@ void Request::Check_read(int socket, fd_set &read_fds, fd_set &write_fds)
         header_len = pos + 16;
       }
   }
-
+    // std::cout << "compareLenBody : " << compareLenBody << std::endl;
+    // std::cout << "body_lenght : " << body_lenght << std::endl;
+    size_t poss;
+    if((poss = request.find("----------------------------")) != std::string::npos && check_l3mara == 0)
+    {
+      l3mara = request.substr(poss, request.length());
+      // l3mara += '\0';
+      l3mara = l3mara.substr(0, l3mara.find('\r'));
+      new_3mara = l3mara + "--";
+      check_l3mara = 1;
+    }
+    // std::cout << "GET : "<< Get << "." << std::endl;
+    // std::cout << "l3mara : "<< new_3mara << "." <<std::endl;
+    // exit(1);
   // body req && cgi && run response
-  if ((request.find("\r\n\r\n") != std::string::npos && Get) || (request.find("\r\n\r\n0") != std::string::npos && !Get) || compareLenBody >= body_lenght)
+  if ((request.find("\r\n\r\n") != std::string::npos && Get)  || (request.find("\r\n\r\n0") != std::string::npos && !Get) || (request.find(new_3mara) != std::string::npos && !Get))
   {
+      // std::cout << request.find("\r\n\r\n") << " Get : " << Get << std::endl;
+      // std::cout << request.find("\r\n\r\n0") << " Get : " << Get << std::endl;
+      // std::cout << request.find(l3mara) << " Get : " << Get << std::endl;
+      
+      // exit(1);
       check_req_valid();
       std::cout << "\033[0;35m" << "---------->>>>>ALL-REQUSTE<<<<<--------" << "\033[0m" << std::endl;
       if(!Get)
         body = request.substr(header_len, request.length());
+      // std::cout << body  << std::endl;
+      // exit(1);
       AddHeaderBody();
       if ((pos = header.find("\r\n\r\n")) != std::string::npos)
         header = header.substr(0, pos + 2);
@@ -343,7 +370,7 @@ void Request::Check_read(int socket, fd_set &read_fds, fd_set &write_fds)
       response.SetUrl(url); 
       if (response.url.find(".py") != std::string::npos)
       {
-        // std::cout << "hnaaaaaaaaa\n";
+        std::cout << "hnaaaaaaaaa\n";
         response.check_cgi = true;
         Cgi cgi;
         cgi.SetHeader(header);

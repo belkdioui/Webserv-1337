@@ -6,7 +6,7 @@
 /*   By: rarraji <rarraji@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 15:53:48 by rarraji           #+#    #+#             */
-/*   Updated: 2024/05/17 10:36:00 by rarraji          ###   ########.fr       */
+/*   Updated: 2024/05/18 14:34:13 by rarraji          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -265,8 +265,10 @@ void Server::checkResponse(int socket, std::string host , std::string port)
                 // }
                 if (i == 0 && this->servers[i].get_location(mapinfo[socket].request.url).get_index().length() > 1)
                 {
-                //    mapinfo[socket].request.response.root = this->servers[i].get_root() + mapinfo[socket].request.url;
-                   mapinfo[socket].request.response.url = this->servers[i].get_root() + this->servers[i].get_location_first(mapinfo[socket].request.url) + this->servers[i].get_location(mapinfo[socket].request.url).get_index();
+                //  mapinfo[socket].request.response.root = this->servers[i].get_root() + mapinfo[socket].request.url;
+                    mapinfo[socket].request.response.url = this->servers[i].get_root() + this->servers[i].get_location_first(mapinfo[socket].request.url) + this->servers[i].get_location(mapinfo[socket].request.url).get_index();
+                    mapinfo[socket].request.response.redur = true;
+                    mapinfo[socket].request.response.new_redur = mapinfo[socket].request.response.url;
                     // this->servers[i].get_location(mapinfo[socket].request.url)
                     std::cout << "index To serve : " << mapinfo[socket].request.response.url << std::endl;
                     i = 1;
