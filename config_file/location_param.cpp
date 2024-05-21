@@ -46,6 +46,10 @@ void location_param::set_index(std::string Index)
 {
     index = Index;
 }
+void location_param::set_root(std::string Root)
+{
+    root = Root;
+}
 
 void location_param::set_directory_listing(std::string Directory_listing)
 {
@@ -84,4 +88,9 @@ std::string location_param::get_directory_listing()
 std::string location_param::get_upload_dir()
 {
     return upload_dir;
+}
+
+std::string location_param::get_root()
+{
+    return root;
 }

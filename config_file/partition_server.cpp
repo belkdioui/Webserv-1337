@@ -40,6 +40,11 @@ void partition_server::set_error_pages(std::string index, std::string value)
     error_pages[index] = value;
 }
 
+void partition_server::set_server_name(std::string Server_name)
+{
+    server_name = Server_name;
+}
+
 void partition_server::set_location(std::string index, location_param value)
 {
     location[index] = value;
@@ -68,6 +73,11 @@ std::string partition_server::get_max_body_size()
 std::string partition_server::get_index()
 {
     return index;
+}
+
+std::string partition_server::get_server_name()
+{
+    return server_name;
 }
 
 std::string partition_server::get_error_pages(std::string key)

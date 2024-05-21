@@ -11,6 +11,7 @@ class partition_server{
         std::string port;
         std::string root;
         std::string max_body_size;
+        std::string server_name;
         std::string index;
         std::map<std::string, std::string> error_pages;
         std::map<std::string, location_param> location;
@@ -24,7 +25,9 @@ class partition_server{
         void set_index(std::string );
         void set_error_pages(std::string, std::string);
         void set_location(std::string, location_param);
+        void set_server_name(std::string);
         std::string get_host();
+        std::string get_server_name();
         std::string get_port();
         std::string get_root();
         std::string get_max_body_size();

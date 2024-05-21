@@ -1,14 +1,15 @@
-```#############################################
+#############################################
 #										    #
 #		THE DEFAULT CONFIGURATION FILE		#
 #										    #
 #############################################
 
 server:
-	host: 0.255.0.0
+	host: localhost
 	port: 2003
 	root: /Users/abouabra/1337/backserve/assets/server_1/
 	max_body_size: 1000000
+	server_name: firstserver
 
 	# Index Page
 	index: index.html

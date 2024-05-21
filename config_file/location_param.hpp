@@ -16,6 +16,7 @@ class location_param
         std::string index;
         std::string directory_listing;
         std::string upload_dir;
+        std::string root;
     public:
         location_param();
         ~location_param();
@@ -24,9 +25,11 @@ class location_param
         void set_index(std::string);
         void set_directory_listing(std::string);
         void set_upload_dir(std::string);
+        void set_root(std::string);
         std::string get_redirect_url();
         bool get_methods(std::string key);
         std::string get_index();
+        std::string get_root();
         std::string get_directory_listing();
         std::string get_upload_dir();
 };

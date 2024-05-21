@@ -1,7 +1,15 @@
 #include "config_file.hpp"
-#include <fstream>
-#include <sstream>
-#include <regex>
+
+void config_file::is_valid_host(const std::string& hostname) {
+  addrinfo *res;
+  int status = getaddrinfo(hostname.c_str(), nullptr, nullptr, &res);
+  if (status != 0) {
+    freeaddrinfo(res);
+    print_error("error in this part :", hostname);
+    exit(1);
+  }
+  freeaddrinfo(res);
+}
 
 bool config_file::check_path(std::string path) {
     if (path.empty()) {
@@ -49,7 +57,6 @@ int config_file::convert_string_to_int(std::string str)
 int config_file::count_alphabetic_and_check_is_digits(char c, std::string str, int number, int min , int max)
 {
     std::string word;
-    // std::cout<<"*"<<str<<"*"<<std::endl;
     for (size_t i = 0; i < str.size() && number > 0; i++)
     {
         if(str[i] == c)
@@ -110,6 +117,8 @@ int check_location(std::string index, std::string value, location_param &loc)
         loc.set_upload_dir(value);
     else if (index == "directory_listing:")
         loc.set_directory_listing(value);
+    else if (index == "root:")
+        loc.set_root(value);
     else
         return(1);
     return(0);
@@ -124,15 +133,19 @@ int config_file::check_and_store_data(partition_server *new_server, std::vector<
     std::getline(ss, value);
     index.erase(0, index.find_first_not_of(" \t"));
     value.erase(0, value.find_first_not_of(" \t"));
-
     if (index == "host")
     {
-        count_alphabetic_and_check_is_digits('.', value, 3, 0, 255);
+        is_valid_host(value);
+        // count_alphabetic_and_check_is_digits('.', value, 3, 0, 255);
         new_server->set_host(value);
+    }
+    else if (index == "server_name")
+    {
+        new_server->set_server_name(value);
     }
     else if (index == "port")
     {
-        count_alphabetic_and_check_is_digits('.', value, -1, -1, -1);
+        count_alphabetic_and_check_is_digits('.', value, -1, 1, 65536);
         new_server->set_port(value);
     }
     else if (index == "root")
@@ -156,14 +169,13 @@ int config_file::check_and_store_data(partition_server *new_server, std::vector<
             std::stringstream se(*it);
             se>>index>>value;
             new_server->set_error_pages(index, value);
-            while(index == "400:" || index == "403:" || index == "404:" || index == "405:" || index == "413:" || index == "500:" || index == "502:" || index == "504:" || index == "\n")
-            {
-                it++;
-                se.clear();
-                se<<(*it);
-                se>>index>>value;
-                new_server->set_error_pages(index, value);
-            }
+            index.erase(index.end()-1);
+            count_alphabetic_and_check_is_digits('.', index, -1, 100, 599);
+            it++;
+            se.clear();
+            se<<(*it);
+            se>>index>>value;
+            new_server->set_error_pages(index, value);
         }
     }
     else if (index == "location:")
@@ -236,6 +248,21 @@ config_file::config_file(const std::string& name_of_file)
     while (std::getline(file, line))
         lines_of_conf.push_back(line);
     split_servers(lines_of_conf);
+}
+
+bool config_file::delete_file(std::string name_of_file)
+{
+    std::ifstream file(name_of_file);
+    if(file)
+    {
+        file.close();
+        if (std::remove(name_of_file.c_str()) == 0)
+            return true;
+        else
+            return false;
+    }
+    else
+        return false;
 }
 
 config_file::~config_file()
