@@ -26,7 +26,6 @@ void location_param::set_methods(std::string Methods)
 {
     std::string word;
     std::stringstream ss(Methods);
-    // std::cout<<Methods<<std::endl;
     while (!ss.eof())
     {
         std::getline(ss, word,  '|');
@@ -68,7 +67,6 @@ std::string location_param::get_redirect_url()
 
 bool location_param::get_methods(std::string key)
 {
-    // std::cout<<key<<std::endl;
     std::map<std::string, bool>::iterator it = methods.find(key);
     if(it == methods.end())
         return false;

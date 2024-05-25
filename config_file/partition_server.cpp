@@ -40,10 +40,17 @@ void partition_server::set_error_pages(std::string index, std::string value)
     error_pages[index] = value;
 }
 
-void partition_server::set_server_name(std::string Server_name)
+
+void partition_server::set_server_name(std::vector<std::string>& Server_name)
 {
     server_name = Server_name;
 }
+
+void partition_server::set_ports(std::vector<std::string>& Ports)
+{
+    ports = Ports;
+}
+
 
 void partition_server::set_location(std::string index, location_param value)
 {
@@ -75,9 +82,16 @@ std::string partition_server::get_index()
     return index;
 }
 
-std::string partition_server::get_server_name()
+std::vector<std::string>& partition_server::get_server_name()
 {
+    // std::cout<<server_name[1]<<std::endl;
     return server_name;
+}
+
+std::vector<std::string>& partition_server::get_ports()
+{
+    // std::cout<<server_name[1]<<std::endl;
+    return ports;
 }
 
 std::string partition_server::get_error_pages(std::string key)
