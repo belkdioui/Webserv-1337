@@ -10,7 +10,7 @@
 class partition_server{
 
     private:
-        std::string host;
+        long int host;
         std::string port;
         std::vector<std::string> ports;
         std::string root;
@@ -22,7 +22,7 @@ class partition_server{
     public:
         partition_server();
         ~partition_server();
-        void set_host(std::string );
+        void set_host(long int );
         void set_port(std::string );
         void set_ports(std::vector<std::string>& Ports);
         void set_root(std::string );
@@ -31,7 +31,7 @@ class partition_server{
         void set_error_pages(std::string, std::string);
         void set_location(std::string, location_param);
         void set_server_name(std::vector<std::string>& Server_name);
-        std::string get_host();
+        long int get_host();
         std::vector <std::string>& get_server_name();
         std::vector <std::string>& get_ports();
         std::string get_port();

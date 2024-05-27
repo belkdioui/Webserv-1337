@@ -1,25 +1,18 @@
 server:
 	host: localhost
-	port: 2003 2505
+	port:   2003          2505    
 	root: /Users/abouabra/1337/backserve/assets/server_1        hhijijijij
-
 	max_body_size: 1000000
-	server_name: firstserver dsdsd
+	server_name: firstserver dsdsd  
 	index: index.html
-
-
 	error_pages:       
 		400: error_pages/400.html
 		403: error_pages/403.html
 		404: error_pages/404.html
 		405: error_pages/405.html
 		410: error_pages/413.html
-
-
-	
 	location: /site_1/
 		index: index.html
-
 	location: /site_1/lsls/1
 		methods: POST | GET
 		index: index.html

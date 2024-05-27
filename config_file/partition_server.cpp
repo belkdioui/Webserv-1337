@@ -2,7 +2,7 @@
 
 partition_server::partition_server()
 {
-    
+    host = -1;
 }
 
 partition_server::~partition_server()
@@ -10,7 +10,7 @@ partition_server::~partition_server()
     
 }
 
-void partition_server::set_host(std::string Host)
+void partition_server::set_host(long int Host)
 {
     host = Host;
 }
@@ -57,7 +57,7 @@ void partition_server::set_location(std::string index, location_param value)
     location[index] = value;
 }
 
-std::string partition_server::get_host()
+long int partition_server::get_host()
 {
     return host;
 }

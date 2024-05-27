@@ -34,11 +34,9 @@ void location_param::set_methods(std::string Methods)
     std::string delim = " | "; 
     size_t pos = 0;  
     std::string token1; 
-  
     while (( pos = Methods.find (delim)) != std::string::npos)  
     {  
         token1 = Methods.substr(0, pos);
-        // std::cout <<"**"<< token1 <<"**"<< std::endl; 
         if(token1 == "GET")
             methods[token1] = true;
         else if (token1 == "POST")
@@ -49,7 +47,6 @@ void location_param::set_methods(std::string Methods)
             fun_print_error("error in this part : ", Methods);
         Methods.erase(0, pos + delim.length());
     }  
-    // std::cout <<"**"<< Methods << "**"<<std::endl;
         if(Methods == "GET")
             methods[Methods] = true;
         else if (Methods == "POST")

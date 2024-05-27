@@ -23,7 +23,7 @@ public:
     int cal_how_many_strings_in_string(std::string str, char c);
     bool only_whitespace(const std::string& str);
     bool first_char_after_whitespace(const std::string &str, char c);
-    void is_valid_host(const std::string& hostname);
+    void is_valid_host(partition_server *new_server ,const std::string& hostname);
     void multiple_srv_with_with_multiple_port(partition_server);
     config_file(const std::string& name_of_file);
     bool delete_file(std::string name_of_file);

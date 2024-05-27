@@ -13,7 +13,7 @@ int main(int ac, char **av)
     for(std::vector<partition_server>::iterator it = servers.begin(); it != servers.end(); it++)
     {
         // std::cout<<it->get_port()<<std::endl;
-        std::cout<<it->get_location("/site_1/lsls/1").get_methods("GET")<<std::endl;
+        std::cout<<it->get_host()<<std::endl;
     }
      
 }
