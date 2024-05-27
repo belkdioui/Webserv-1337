@@ -17,6 +17,8 @@ private:
     std::vector<std::string> lines_of_conf;
     std::vector<partition_server> servers;
 public:
+    int check_location(std::string index, std::string value, location_param &loc);
+    void check_if_empty(partition_server *new_server);
     void split_by_char_and_store_in_vector(std::string str, char c, std::vector<std::string> &vect);
     int cal_how_many_strings_in_string(std::string str, char c);
     bool only_whitespace(const std::string& str);

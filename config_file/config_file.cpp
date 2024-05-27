@@ -1,5 +1,6 @@
 #include "config_file.hpp"
 
+#include <iterator>
 bool config_file::first_char_after_whitespace(const std::string &str, char c)
 {
     unsigned long i ;
@@ -65,11 +66,13 @@ bool config_file::only_whitespace(const std::string& str) {
       return false;
     }
   }
+
   return true;
 }
 
 int config_file::count_alphabetic_and_check_is_digits(char c, std::string str, int number, int min , int max)
 {
+    std::cout<<str<<std::endl;
     if(only_whitespace(str) || str.empty())
         return(1);
     std::string word;
@@ -84,6 +87,7 @@ int config_file::count_alphabetic_and_check_is_digits(char c, std::string str, i
 
     while(!ss.eof())
     {
+        // std::cout<<"/***"<<word<<std::endl;
         int num;
         getline(ss, word, c);
         num = convert_string_to_int(word);
@@ -112,22 +116,32 @@ int cal_num_of_server(std::vector<std::string> lines_of_conf)
     return (num);
 }
 
-int check_location(std::string index, std::string value, location_param &loc)
+int config_file::check_location(std::string index, std::string value, location_param &loc)
 {
-
-    if (index == "redirect_URL:")
+    if (index == "redirect_URL")
         loc.set_redirect_url(value);
-    else if (index == "index:")
+    else if (index == "index")
         loc.set_index(value);
-    else if (index == "methods:")
+    else if (index == "methods")
         loc.set_methods(value);
-    else if (index == "upload_dir:")
+    else if (index == "upload_dir")
         loc.set_upload_dir(value);
-    else if (index == "directory_listing:")
+    else if (index == "directory_listing")
         loc.set_directory_listing(value);
-    else if (index == "root:")
-        loc.set_root(value);
-    else
+    else if (index == "root")
+    {
+        if(!first_char_after_whitespace(value, '/') || !loc.get_alias().empty())
+            print_error("error in this part :", value);
+        loc.set_root(value + '/');
+    
+    }
+    else if (index == "alias")
+    {
+        if(!first_char_after_whitespace(value, '/') || !loc.get_root().empty())
+            print_error("error in this part :", value);
+        loc.set_alias(value);
+    
+    }else
         return(1);
     return(0);
 }
@@ -159,6 +173,12 @@ void config_file::multiple_srv_with_with_multiple_port(partition_server new_serv
     
 }
 
+// void config_file::check_if_empty(partition_server *new_server)
+// {
+//         if(new_server->get_host().empty())
+//             print_error("duplicate in this error : ", new_server->get_host());
+// }
+
 int config_file::check_and_store_data(partition_server *new_server, std::vector<std::string>::iterator& it)
 {
     std::stringstream ss(*it);
@@ -166,21 +186,28 @@ int config_file::check_and_store_data(partition_server *new_server, std::vector<
     std::string value;
     std::getline(ss, index, ':');
     std::getline(ss, value);
+
     index.erase(0, index.find_first_not_of(" \t"));
     value.erase(0, value.find_first_not_of(" \t"));
     if (index == "host" && !value.empty())
     {
+        if(!new_server->get_host().empty())
+            print_error("duplicate in this part : ", index);
         is_valid_host(value);
         new_server->set_host(value);
     }
     else if (index == "server_name" && !value.empty())
     {
+        if(!new_server->get_server_name().empty())
+            print_error("duplicate in this part : ", index);
         std::vector<std::string> vect;
         split_by_char_and_store_in_vector(value, ' ', vect);
         new_server->set_server_name(vect);
     }
     else if (index == "port" && !value.empty())
     {
+        if(!new_server->get_ports().empty())
+            print_error("duplicate in this part : ", index);
         std::vector<std::string> vect;
         count_alphabetic_and_check_is_digits(' ', value, -1, 1, 65536);
         split_by_char_and_store_in_vector(value, ' ', vect);
@@ -188,17 +215,25 @@ int config_file::check_and_store_data(partition_server *new_server, std::vector<
     }
     else if (index == "root" && !value.empty())
     {
+        if(!new_server->get_root().empty())
+            print_error("duplicate in this part : ", index);
         if(!first_char_after_whitespace(value, '/'))
             print_error("error in this part :", value);
         new_server->set_root(value+'/');
     }
     else if (index == "max_body_size" && !value.empty())
     {
-        count_alphabetic_and_check_is_digits(' ', value, -1, 0, 21000000);
+        if(!new_server->get_max_body_size().empty())
+            print_error("duplicate in this part : ", index);
+        count_alphabetic_and_check_is_digits('\n', value, -1, 0, 21000000);
         new_server->set_max_body_size(value);
     }
     else if (index == "index" && !value.empty())
+    {
+        if(!new_server->get_index().empty())
+            print_error("duplicate in this part : ", index);
         new_server->set_index(value);
+    }
     else if (index == "error_pages")
     {
         if(value.empty())
@@ -209,6 +244,8 @@ int config_file::check_and_store_data(partition_server *new_server, std::vector<
             index.erase(index.end()-1);
             while(!count_alphabetic_and_check_is_digits('.', index, -1, 100, 599))
             {
+                if(!new_server->get_error_pages(index).empty())
+                    print_error("duplicate in this part : ", index);
                 new_server->set_error_pages(index, value);
                 it++;
                 if((*it).empty() || only_whitespace(*it))
@@ -222,6 +259,7 @@ int config_file::check_and_store_data(partition_server *new_server, std::vector<
     }
     else if (index == "location")
     { 
+
         if(!value.empty())
         {
             if(!first_char_after_whitespace(value, '/'))
@@ -230,23 +268,32 @@ int config_file::check_and_store_data(partition_server *new_server, std::vector<
             save = value;
             it++;
             std::stringstream sl(*it);
-            sl>>index>>value;
+            std::getline(sl, index, ':');
+            std::getline(sl, value);
+            index.erase(0, index.find_first_not_of(" \t"));
+            value.erase(0, value.find_first_not_of(" \t"));
             location_param loc;
-            while (index == "redirect_URL:" || index == "index:" || index == "methods:" || index == "directory_listing:" || index == "upload_dir:" || index == "directory_listing:" || index == "root:")
+            while (index == "redirect_URL" || index == "index" || index == "methods" || index == "directory_listing" || index == "upload_dir" || index == "directory_listing" || index == "root" || index == "alias")
             {
-                check_location(index, value, loc);
+                if(check_location(index, value, loc))
+                    print_error("error in this part: ", index);      
                 it++;
-                if((*it).empty() || only_whitespace(*it))
-                    break;
+                if (((*it).empty() || only_whitespace(*it)))
+                    break;      
                 std::stringstream sn(*it);
-                sn>>index>>value;
+                std::getline(sn, index, ':');
+                std::getline(sn, value);
+                index.erase(0, index.find_first_not_of(" \t"));
+                value.erase(0, value.find_first_not_of(" \t"));
+                std::cout << index << " = " << value << std::endl;
             }
             it--;
             new_server->set_location(save, loc);
+
         }
     }
     else if(!only_whitespace(index))
-        print_error("error in this part :", index);
+        print_error("error in this part :", index);    
     return(0);
 }
 
@@ -266,7 +313,7 @@ std::vector<partition_server> config_file::split_servers(std::vector<std::string
                     check_and_store_data(&new_server, it);
                     ++it;
                     if( (*(it + 1) == "server:") && !only_whitespace(*it))
-                        print_error("error in this part :", *it);           
+                        print_error("error in this part :", *it);
                 }
                 if (new_server.get_max_body_size().empty())
                     new_server.set_max_body_size("100000");
@@ -297,6 +344,7 @@ config_file::config_file(const std::string& name_of_file)
     }
     while (std::getline(file, line))
         lines_of_conf.push_back(line);
+    lines_of_conf.push_back("\n");
     split_servers(lines_of_conf);
 }
 

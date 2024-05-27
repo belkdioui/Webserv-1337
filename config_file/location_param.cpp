@@ -22,23 +22,42 @@ void location_param::set_redirect_url(std::string Redirect_url)
     redirect_url = Redirect_url;
 }
 
+void location_param::set_alias(std::string Alias)
+{
+    alias = Alias;
+}
+
 void location_param::set_methods(std::string Methods)
 {
     std::string word;
     std::stringstream ss(Methods);
-    while (!ss.eof())
-    {
-        std::getline(ss, word,  '|');
-        if(word == "GET")
-            methods[word] = true;
-        else if (word == "POST")
-            methods[word] = true;
-        else if (word == "DELETE")
-            methods[word] = true;
+    std::string delim = " | "; 
+    size_t pos = 0;  
+    std::string token1; 
+  
+    while (( pos = Methods.find (delim)) != std::string::npos)  
+    {  
+        token1 = Methods.substr(0, pos);
+        // std::cout <<"**"<< token1 <<"**"<< std::endl; 
+        if(token1 == "GET")
+            methods[token1] = true;
+        else if (token1 == "POST")
+            methods[token1] = true;
+        else if (token1 == "DELETE")
+            methods[token1] = true;
         else
             fun_print_error("error in this part : ", Methods);
-    }
-    
+        Methods.erase(0, pos + delim.length());
+    }  
+    // std::cout <<"**"<< Methods << "**"<<std::endl;
+        if(Methods == "GET")
+            methods[Methods] = true;
+        else if (Methods == "POST")
+            methods[Methods] = true;
+        else if (Methods == "DELETE")
+            methods[Methods] = true;
+        else
+            fun_print_error("error in this part : ", Methods);  
 }
 
 void location_param::set_index(std::string Index)
@@ -91,4 +110,9 @@ std::string location_param::get_upload_dir()
 std::string location_param::get_root()
 {
     return root;
+}
+
+std::string location_param::get_alias()
+{
+    return alias;
 }

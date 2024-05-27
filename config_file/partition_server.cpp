@@ -97,11 +97,42 @@ std::vector<std::string>& partition_server::get_ports()
 std::string partition_server::get_error_pages(std::string key)
 {
     std::map<std::string, std::string>::iterator it = error_pages.find(key);
+    if (it == error_pages.end())
+        return "";
     return it->second;
 }
 
-location_param partition_server::get_location(std::string index)
+location_param partition_server::get_location(std::string key)
 {
-    std::map<std::string, location_param>::iterator it = location.find(index);
+    std::map<std::string, location_param>::iterator it = location.find(key);
+     if (it == location.end())
+     {
+        std::string path;
+        std::string save;
+        int i = 0;
+        for(it = location.begin(); it != location.end(); it++)
+        {
+            if(!key.find(it->first))
+            {
+                if(i == 0)
+                    save = it->first;
+                else
+                {
+                    if(save.size() <= it->first.size())
+                        save = it->first;
+                }
+            }
+            i++;
+        }
+        it = location.find(save);
+        if (save.empty())
+        {
+            location_param loc;
+            loc.set_methods("GET");
+            set_location("/", loc);
+            return loc;
+        }
+        return it->second;
+     }
     return it->second;
 }

@@ -12,9 +12,8 @@ int main(int ac, char **av)
     std::vector<partition_server> servers = conf.get_servers();
     for(std::vector<partition_server>::iterator it = servers.begin(); it != servers.end(); it++)
     {
-        std::cout<<"here"<<std::endl;
-        std::cout<<it->get_port()<<std::endl;
-        std::cout<<"21"<<std::endl;
+        // std::cout<<it->get_port()<<std::endl;
+        std::cout<<it->get_location("/site_1/lsls/1").get_methods("GET")<<std::endl;
     }
      
 }

@@ -1,23 +1,27 @@
 server:
 	host: localhost
 	port: 2003 2505
-	root: /Users/abouabra/1337/backserve/assets/server_1
-	max_body_size: 1000000 
+	root: /Users/abouabra/1337/backserve/assets/server_1        hhijijijij
+
+	max_body_size: 1000000
 	server_name: firstserver dsdsd
 	index: index.html
 
-	error_pages:          
+
+	error_pages:       
 		400: error_pages/400.html
 		403: error_pages/403.html
 		404: error_pages/404.html
 		405: error_pages/405.html
 		410: error_pages/413.html
 
-	location: /
-		index: index.html
-		methods: GET | POST | HEAD
 
+	
 	location: /site_1/
+		index: index.html
+
+	location: /site_1/lsls/1
+		methods: POST | GET
 		index: index.html
 
 	location: /site_2
@@ -31,90 +35,4 @@ server:
 
 	location: /list
 		directory_listing: true
-		methods: GET
-		
-server:
-	host: 0.6.0.0
-	port: 2004
-	root: /Users/abouabra/1337/backserve/assets/server_2/
-	index: index.html
-	max_body_size: 20000000
-
-	error_pages:
-		400: error_pages/400.html
-		403: error_pages/403.html
-		404: error_pages/404.html
-		500: error_pages/500.html
-		502: error_pages/502.html
-		504: error_pages/504.html
-
-	location: /
-		index: index.html
-		methods: GET
-
-	location: /cgi
-		index: index.html
-		methods: GET
-
-	location: /to_server_1
-		redirect_URL: http://0.0.0.0:2003/
-	
-	location: /to_server_3
-		redirect_URL: http://0.0.0.0:2005/
-
-	location: /cgi/run-python
-		index: GET_Default.py
-		methods: GET | POST
-
-	location: /cgi/run-bash
-		index: GET_Default.sh
-		methods: GET | POST
-
-	location: /cgi/run-php
-		index: GET_Default.php
-		methods: GET | POST
-
-	location: /cgi/delete_cgi/
-		index: delete.py
-		methods: GET | DELETE
-
-	location: /upload
-		index: upload.html
-		methods: POST | GET
-		upload_dir: /Users/abouabra/1337/backserve/assets/server_2/upload/upload_dir/
-
-	location: /upload/upload_dir
-		directory_listing: true
-		methods: GET | DELETE
-
-server:
-	host: 0.7.0.0
-	port: 2005
-	root: /Users/abouabra/1337/backserve/assets/server_3/
-	max_body_size: 1000000
-
-	index: main.py
-
-	error_pages:
-		400: error_pages/400.html
-		404: error_pages/404.html
-		500: error_pages/500.html
-		502: error_pages/502.html
-		504: error_pages/504.html
-
-	location: /
-		root: /Users/abouabra/1337/backserve/assets/server_3/home/
-		index: home.py
-		methods: GET
-
-	location: /login
-		index: login.py
-		methods: GET | POST
-
-	location: /logout
-		index: logout.py
-		methods: GET
-
-	location: /switch
-		index: switch.py
 		methods: GET

@@ -3,6 +3,8 @@
 #include <iostream>
 #include <map>
 #include <vector>
+#include <string>
+#include <iostream>
 #include "location_param.hpp"
 
 class partition_server{
