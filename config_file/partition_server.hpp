@@ -17,11 +17,12 @@ class partition_server{
         std::string max_body_size;
         std::vector<std::string> server_name;
         std::string index;
-        std::map<std::string, std::string> error_pages;
-        std::map<std::string, location_param> location;
     public:
+        std::map<std::string, location_param> location;
+        std::map<std::string, std::string> error_pages;
         partition_server();
         ~partition_server();
+        std::string get_location_first(std::string index);
         void set_host(long int );
         void set_port(std::string );
         void set_ports(std::vector<std::string>& Ports);

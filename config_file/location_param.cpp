@@ -1,12 +1,5 @@
 #include "location_param.hpp"
 
-void fun_print_error(std::string str, std::string str1)
-{
-    std::cout<<str<<std::endl;
-    std::cout<<str1<<std::endl;
-    exit(1);
-}
-
 location_param::location_param()
 {
 
@@ -29,32 +22,21 @@ void location_param::set_alias(std::string Alias)
 
 void location_param::set_methods(std::string Methods)
 {
+    Methods = utils::delete_all_whitespace_and_set_one_space(Methods);
     std::string word;
     std::stringstream ss(Methods);
-    std::string delim = " | "; 
-    size_t pos = 0;  
-    std::string token1; 
-    while (( pos = Methods.find (delim)) != std::string::npos)  
-    {  
-        token1 = Methods.substr(0, pos);
-        if(token1 == "GET")
-            methods[token1] = true;
-        else if (token1 == "POST")
-            methods[token1] = true;
-        else if (token1 == "DELETE")
-            methods[token1] = true;
+    while(!ss.eof())
+    {
+        std::getline(ss, word, ' ');
+        if(word == "GET" && !get_methods("GET"))
+            methods[word] = true;
+        else if (word == "POST" && !get_methods("POST"))
+            methods[word] = true;
+        else if (word == "DELETE" && !get_methods("DELETE"))
+            methods[word] = true;
         else
-            fun_print_error("error in this part : ", Methods);
-        Methods.erase(0, pos + delim.length());
-    }  
-        if(Methods == "GET")
-            methods[Methods] = true;
-        else if (Methods == "POST")
-            methods[Methods] = true;
-        else if (Methods == "DELETE")
-            methods[Methods] = true;
-        else
-            fun_print_error("error in this part : ", Methods);  
+            utils::print_error("error in this part : ", word); 
+    }
 }
 
 void location_param::set_index(std::string Index)

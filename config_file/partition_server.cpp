@@ -54,6 +54,8 @@ void partition_server::set_ports(std::vector<std::string>& Ports)
 
 void partition_server::set_location(std::string index, location_param value)
 {
+    if(location.find(index) != location.end())
+        utils::print_error("duplicate location : ", index);
     location[index] = value;
 }
 
@@ -135,4 +137,10 @@ location_param partition_server::get_location(std::string key)
         return it->second;
      }
     return it->second;
+}
+
+std::string partition_server::get_location_first(std::string index)
+{
+    std::map<std::string, location_param>::iterator it = location.find(index);
+    return it->first;
 }

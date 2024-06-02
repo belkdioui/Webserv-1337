@@ -2,14 +2,16 @@
 #define CONFIG_FILE_HPP
 
 #include <vector>
-#include <iostream>
-#include <iterator>
+#include <string>
 #include <sys/socket.h>
 #include <netdb.h>
 #include <fstream>
 #include <sstream>
 #include <regex>
 #include "partition_server.hpp"
+#include "utils.hpp"
+
+class location_param;
 
 class config_file
 {
@@ -17,8 +19,10 @@ private:
     std::vector<std::string> lines_of_conf;
     std::vector<partition_server> servers;
 public:
+    config_file();
+    void check_if_duplicate_server();
+    void check_if_ports_is_duplicated(partition_server new_server);
     int check_location(std::string index, std::string value, location_param &loc);
-    void check_if_empty(partition_server *new_server);
     void split_by_char_and_store_in_vector(std::string str, char c, std::vector<std::string> &vect);
     int cal_how_many_strings_in_string(std::string str, char c);
     bool only_whitespace(const std::string& str);
@@ -27,8 +31,6 @@ public:
     void multiple_srv_with_with_multiple_port(partition_server);
     config_file(const std::string& name_of_file);
     bool delete_file(std::string name_of_file);
-    void print_error(std::string str, std::string str1);
-    bool check_path(const std::string &path);
     int convert_string_to_int(std::string str);
     int count_alphabetic_and_check_is_digits(char c, std::string str, int number, int min , int max);
     std::vector<partition_server> get_servers();

@@ -1,4 +1,5 @@
 #include "./config_file/config_file.hpp"
+#include "./config_file/location_param.hpp"
 
 int main(int ac, char **av)
 {
@@ -9,11 +10,11 @@ int main(int ac, char **av)
     }
     const std::string name = av[1];
     config_file conf(name);
+
     std::vector<partition_server> servers = conf.get_servers();
     for(std::vector<partition_server>::iterator it = servers.begin(); it != servers.end(); it++)
     {
-        // std::cout<<it->get_port()<<std::endl;
-        std::cout<<it->get_host()<<std::endl;
+        std::cout<<"**"<<it->get_error_pages("403")<<"**"<<std::endl;
     }
      
 }

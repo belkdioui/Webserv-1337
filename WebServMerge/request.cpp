@@ -324,7 +324,7 @@ void Request::Check_read(int socket, fd_set &read_fds, fd_set &write_fds)
       AddHeaderReq(valread);
       if ((pos = request.find("Content-Length: ")) != std::string::npos)
       {
-        // check if allow methode post configfile
+        // check if allow methode post config_file
         Get = false;
         // std::cout << "\033[0;35m"  << "========CHUNKED========" << "\033[0m" << std::endl;
         body_lenght = std::atoi(request.substr(pos + 16,  request.find("\r\n", pos + 16) - pos + 16).c_str());

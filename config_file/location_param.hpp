@@ -1,12 +1,11 @@
 #ifndef LOCATION_PARAM_HPP
 #define LOCATION_PARAM_HPP
 
+#include "utils.hpp"
 #include <map>
 #include <iostream>
 #include <sstream>
-// #include "config_file.hpp"
-
-// class config_file;
+#include <string>
 
 class location_param
 {
