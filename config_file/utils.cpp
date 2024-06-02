@@ -40,3 +40,11 @@ void utils::print_error(std::string str, std::string str1)
     std::cout<<"**"<<str1<<"**"<<std::endl;
     exit(1);
 }
+
+std::string utils::trim_space_from_back(std::string str) {
+    int i = str.size();
+    while (i > 0 && (str[i - 1] == ' ' || str[i - 1] == '\t' || str[i - 1] == '\n')) {
+        i--;
+    }
+    return std::string(str.substr(0, i));
+}

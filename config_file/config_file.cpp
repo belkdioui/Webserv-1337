@@ -168,6 +168,7 @@ int config_file::check_location(std::string index, std::string value, location_p
         if(loc.get_methods("GET") || loc.get_methods("POST") || loc.get_methods("DELETE"))
             utils::print_error("duplicate in this part : ", index);
         loc.set_methods(value);
+
     }
     else if (index == "upload_dir")
     {
@@ -304,12 +305,14 @@ int config_file::check_and_store_data(partition_server *new_server, std::vector<
         {
             it++;
             std::stringstream se(*it);
-            se>>index>>value;
-            // std::cout<<index<<"  "<<value<<std::endl;
-            index.erase(index.end()-1);
+            std::getline(se, index, ':');
+            std::getline(se, value);
+            index.erase(0, index.find_first_not_of(" \t"));
+            value.erase(0, value.find_first_not_of(" \t"));
             while(!count_alphabetic_and_check_is_digits('.', index, -1, 100, 599))
             {
                 value = utils::delete_all_whitespace_and_set_one_space(value);
+
                 if(!new_server->get_error_pages(index).empty())
                     utils::print_error("duplicate in this part : ", index);
                 new_server->set_error_pages(index, value);
@@ -317,8 +320,10 @@ int config_file::check_and_store_data(partition_server *new_server, std::vector<
                 if((*it).empty() || only_whitespace(*it))
                     break;
                 std::stringstream se(*it);
-                se>>index>>value;
-                index.erase(index.end()-1);
+                std::getline(se, index, ':');
+                std::getline(se, value);
+                index.erase(0, index.find_first_not_of(" \t"));
+                value.erase(0, value.find_first_not_of(" \t"));
                 if(index == "location" || index == "host" || index == "server_name" || index =="port" || index == "root" || index == "max_body_size" || index == "index")
                     break;
             }
@@ -330,7 +335,8 @@ int config_file::check_and_store_data(partition_server *new_server, std::vector<
 
         if(!value.empty())
         {
-            if(!first_char_after_whitespace(value, '/'))
+            value = utils::trim_space_from_back(value);
+            if(!first_char_after_whitespace(value, '/') || value[value.size()-1] != '/')
                 utils::print_error("error in this part :", value);
             std::string save;
             save = value;
@@ -355,6 +361,8 @@ int config_file::check_and_store_data(partition_server *new_server, std::vector<
                 value.erase(0, value.find_first_not_of(" \t"));
             }
             it--;
+            if(loc.get_methods("GET") != true && loc.get_methods("POST") != true && loc.get_methods("DELETE") != true)
+                loc.set_methods("GET");
             new_server->set_location(save, loc);
 
         }
@@ -410,7 +418,6 @@ config_file::config_file(const std::string& name_of_file)
         lines_of_conf.push_back(line);
     lines_of_conf.push_back("\n");
     split_servers(lines_of_conf);
-    // std::cout<<"here"<<std::endl;
     check_if_duplicate_server();
 }
 

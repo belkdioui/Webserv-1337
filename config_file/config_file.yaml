@@ -1,6 +1,6 @@
 server:
 	host: 	localhost    
-	port:   2007 2009 5555       
+	port:   2007 2009 5456     
 	max_body_size: 10000000   
 	root: /Users/abouabra/1337/backserve/assets/server_1//site  gfhfgh
 	server_name: ghjfghjfhj fghfgh
@@ -12,23 +12,25 @@ server:
 		405: error_pages/405.html
 		410: error_pages/413.html
 	location: /site_1/
-		index: index.html
-	location: /site_1/lsls/1
+		index: index.html  
+		methods: POST             GET     DELETE      
+	location: /site_1/lsls/1/
 		methods: POST             GET     DELETE      
 		index: index.html
 
-	location: /site_2
+	location: /site_2/
 		index: index.html
 
 	location: /to_server_2/
 		redirect_URL: http://0.0.0.0:2004/sdf
 	
-	location: /to_server_3
+	location: /to_server_3/
 		redirect_URL: http://0.0.0.0:2005/ 
 
-	location: /list
+	location: /list/
 		directory_listing: true
 		methods: GET
+
 
 server:
 	host: localhost   
@@ -45,22 +47,23 @@ server:
 		405: error_pages/405.html
 		410: error_pages/413.html
 	location: /site_1/
+	root: /Users/abouabra/1337/backserve/assets/server_1/
 		index: index.html
 
-	location: /site_1/lsls/1
+	location: /site_1/lsls/1  /
 		methods: POST  GET 
 		index: index.html
 
-	location: /site_2
+	location: /site_2/
 		index: index.html 
 		alias: /ok/
 
-	location: /to_server_2
+	location: /to_server_2/
 		redirect_URL:      http://0.0.0.0:2004/         
 
-	location: /to_server_3
+	location: /to_server_3/
 		redirect_URL: http://0.0.0.0:2005/
 
-	location: /list
+	location: /list/
 		directory_listing: true   
 		methods: GET   
