@@ -383,11 +383,11 @@ std::vector<partition_server> config_file::split_servers(std::vector<std::string
             {
                 partition_server new_server;
                 it++;
-                while(it != lines_of_conf.end() && *(it + 1) != "server:")
+                while (it != lines_of_conf.end() && (it + 1) != lines_of_conf.end() && *(it + 1) != "server:")
                 {
                     check_and_store_data(&new_server, it);
                     ++it;
-                    if( (*(it + 1) == "server:") && !only_whitespace(*it))
+                    if ((it + 1) != lines_of_conf.end() && (*(it + 1) == "server:") && !only_whitespace(*it))
                         utils::print_error("error in this part :", *it);
                 }
                 check_if_ports_is_duplicated(new_server);

@@ -21,24 +21,51 @@ int main(int ac, char **av)
      
 }
 
+// #include <dirent.h>
+// #include <stdio.h>
+// #include <stdlib.h>
+// #include <string.h>
+// #include <limits.h>
+// #include <unistd.h>
+// #include <cstdio>
+// #include <cstring>
 // #include <iostream>
-// #include <cstdio> 
 
-// bool removeFile(const std::string &filePath) {
-//     if (std::remove(filePath.c_str()) == 0) {
-//         return true;
+// int deletePath(const char* path) {
+//     if (std::remove(path) == 0) {
+//         std::cout << "Deleted successfully" << std::endl;
+//         return 0;
 //     } else {
-//         return false;
+//         std::cerr << "Unable to delete the file or directory" << std::endl;
+//         return -1;
 //     }
 // }
 
-// int main() {
-//     std::string path = "/Users/bel-kdio/Desktop/Webserv-1337";
-//     if (removeFile(path)) {
-//         std::cout << "File successfully deleted." << std::endl;
-//     } else {
-//         std::cout << "File could not be deleted." << std::endl;
+// void removeDirectoryRecursively(const char *path) {
+//     DIR *dir;
+//     struct dirent *entry;
+//     char fullPath[PATH_MAX];
+//     if ((dir = opendir(path)) == NULL) {
+//         perror("opendir");
+//         return;
 //     }
+//     while ((entry = readdir(dir))!= NULL) {
+//         if (strcmp(entry->d_name, ".") && strcmp(entry->d_name, "..")) {
+//             snprintf(fullPath, sizeof(fullPath), "%s/%s", path, entry->d_name);
+//             if (entry->d_type == DT_DIR) {
+//                 removeDirectoryRecursively(fullPath);
+//             } else {
+//                 unlink(fullPath);
+//             }
+//         }
+//     }
+//     closedir(dir);
+//     rmdir(path);
+// }
 
+// int main() {
+//     const char *directoryPath = "/Users/bel-kdio/Desktop/Webserv-1337/solix";
+//     if(deletePath(directoryPath)==-1)
+//         removeDirectoryRecursively(directoryPath);
 //     return 0;
 // }

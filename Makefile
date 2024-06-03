@@ -3,7 +3,7 @@ SRC = main.cpp ./config_file/config_file.cpp ./config_file/partition_server.cpp 
 OBJ = $(SRC:.cpp=.o)
 NAME = Webserv
 RM = rm -rf
-CFLAGS = -Wall -Werror -Wextra -std=c++98 #-fsanitize=address -g
+CFLAGS = -Wall -Werror -Wextra -std=c++98 -g -fsanitize=address 
 
 
 all: $(NAME)
