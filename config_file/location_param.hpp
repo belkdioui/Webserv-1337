@@ -18,8 +18,10 @@ class location_param
         std::string root;
         std::string alias;
     public:
+        
         location_param();
         ~location_param();
+        bool operator==(const location_param& other);
         void set_redirect_url(std::string);
         void set_methods(std::string);
         void set_index(std::string);

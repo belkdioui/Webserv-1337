@@ -1,0 +1,38 @@
+server:
+	host: localhost
+	port: 2004 2005 2006
+	root: /Users/bel-kdio/Desktop/WebServe/pages/web3/
+	max_body_size: 10000000
+	index: index.html
+	server_name: hello.com
+
+	error_pages:
+		400: ErrorPages/400.html
+		401: ErrorPages/401.html
+		403: ErrorPages/403.html
+		404: ErrorPages/404.html
+		405: ErrorPages/405.html
+		413: ErrorPages/413.html
+
+		location: /upload_cgi/
+			index: upload.html
+			methods: GET POST
+
+		location: /list/
+			directory_listing: true
+			methods: GET DELETE
+
+		location: /server1/
+			index: index.html
+			methods: GET
+
+		location: /alias/
+			alias: /Users/bel-kdio/Desktop/WebServe/pages/web3/
+
+
+		location: /redir/
+			redirect_URL: https://google.com
+
+		location: /cgi/
+			index: main.py
+			methods: GET POST

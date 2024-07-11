@@ -1,0 +1,12 @@
+server:
+	host: 0.0.0.0
+	port: 2004
+	root: /Users/bel-kdio/Desktop/WebServe/pages/web1/
+	index: index.html
+
+server:
+	host: 0.0.0.0
+	port: 2004
+	root: /Users/bel-kdio/Desktop/WebServe/pages/web3/
+	index: index.html
+	server_name: 127.0.0.1:2004 localhost:2004

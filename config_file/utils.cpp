@@ -1,5 +1,9 @@
 #include "utils.hpp"
 
+namespace utils {
+    std::string big_index = "";
+}
+
 std::string utils::delete_all_whitespace_and_set_one_space(std::string str)
 {
     std::string word;
@@ -47,4 +51,59 @@ std::string utils::trim_space_from_back(std::string str) {
         i--;
     }
     return std::string(str.substr(0, i));
+}
+
+std::string normalizeSlashes1(const std::string &input) {
+    std::string result;
+    bool lastWasSlash = false;
+
+    for (std::string::const_iterator it = input.begin(); it != input.end(); ++it) {
+        if (*it == '/') {
+            if (!lastWasSlash) {
+                result += *it;
+                lastWasSlash = true;
+            }
+        } else {
+            result += *it;
+            lastWasSlash = false;
+        }
+    }
+
+    return result;
+}
+
+int utils::deletePath(const char* path) 
+{
+    if (std::remove(normalizeSlashes1(path).c_str()) == 0)
+        return 0;
+    return -1;
+}
+
+int utils::removeDirectoryRecursively(const char *path) 
+{
+    DIR *dir;
+    struct dirent *entry;
+    if ((dir = opendir(normalizeSlashes1(path).c_str())) == NULL) {
+        std::cout << "failed to opendir" << std::endl;
+        return -1;
+    }
+    while ((entry = readdir(dir))!= NULL) {
+        if (std::string(entry->d_name) != "." && std::string(entry->d_name) != "..") {
+            std::cout << entry->d_name << std::endl;
+            if (entry->d_type == DT_DIR) {
+                return removeDirectoryRecursively(entry->d_name);
+            } else {
+                std::string full_path = std::string(path) + std::string(entry->d_name);
+                if(std::remove(full_path.c_str()) != 0 )
+                {
+                    return -1;
+                    std::cout << "std::remove failed" << std::endl;
+                }
+            }
+        }
+    }
+    closedir(dir);
+    if(std::remove(normalizeSlashes1(path).c_str()))
+        return -1;
+    return 0;
 }

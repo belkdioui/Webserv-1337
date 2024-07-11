@@ -7,7 +7,6 @@
 #include <netdb.h>
 #include <fstream>
 #include <sstream>
-#include <regex>
 #include "partition_server.hpp"
 #include "utils.hpp"
 

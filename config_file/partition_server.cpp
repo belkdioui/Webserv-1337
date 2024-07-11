@@ -86,13 +86,11 @@ std::string partition_server::get_index()
 
 std::vector<std::string>& partition_server::get_server_name()
 {
-    // std::cout<<server_name[1]<<std::endl;
     return server_name;
 }
 
 std::vector<std::string>& partition_server::get_ports()
 {
-    // std::cout<<server_name[1]<<std::endl;
     return ports;
 }
 
@@ -131,6 +129,7 @@ location_param partition_server::get_location(std::string key)
         {
             location_param loc;
             loc.set_methods("GET");
+            loc.set_index(utils::big_index);
             set_location("/", loc);
             return loc;
         }

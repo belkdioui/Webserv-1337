@@ -9,6 +9,12 @@ location_param::~location_param()
 {
     
 }
+bool location_param::operator==(const location_param& other)
+{
+	if (redirect_url == other.redirect_url && methods == other.methods && index == other.index && directory_listing == other.directory_listing && upload_dir == other.upload_dir && root == other.root && alias == other.alias)
+		return true;
+	return false;
+}
 
 void location_param::set_redirect_url(std::string Redirect_url)
 {

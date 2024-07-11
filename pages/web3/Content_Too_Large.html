@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+    <style>
+        .card {
+        background-color: #000000;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        padding: 20px;
+        margin: 10px;
+        display: inline-block;
+        width: 300px; /* Adjust width as needed */
+        text-align: center;
+        transition: transform 0.2s ease-in-out; /* Add hover effect */
+      }
+      
+      .card:hover {
+        transform: scale(1.02); /* Add subtle zoom on hover */
+      }
+      
+      .card h2 {
+        font-size: 1.5em;
+        margin-bottom: 10px;
+      }
+      
+      .card p {
+        font-size: 1em;
+        color: #333;
+        line-height: 1.5;
+      }
+      
+      .card a {
+        color: #007bff;
+        text-decoration: none;
+        padding: 5px 10px;
+        border: 1px solid #007bff;
+        border-radius: 5px;
+        transition: all 0.2s ease-in-out;
+      }
+      
+      .card a:hover {
+        background-color: #007bff;
+        color: #000000;
+      }
+     
+      @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@200;300;400;500;700;800;900&display=swap');
+      
+      /* Global Styles */
+      * {
+        padding: 6;
+        margin: 0;
+        box-sizing: border-box;
+        font-family: Tajawal, sans-serif; /* Use Tajawal if imported, fallback to sans-serif */
+      }
+      
+      /* Body Background (Adjust transparency as desired) */
+      body {
+        background-color: rgba(255, 253, 253, 0.57);
+      }
+      
+      /* Remove underline from links */
+      a {
+        text-decoration: none;
+      }
+      
+      /* Container (Adjust width and margins) */
+      .container {
+        width: 80%; /* Responsive width */
+        max-width: 1200px; /* Set a maximum width */
+        margin: 0 auto; /* Center horizontally */
+        text-align: center;
+        border-radius: 5px; /* Rounded corners */
+      }
+      
+      .container .title {
+        margin-bottom: 50px;
+      }
+      
+      .container .title h1 {
+        color: green;
+        font-size: 3em; /* Use em unit for better scalability */
+      }
+      
+      /* Client and Server Sections (Side-by-side layout) */
+      .client,
+      .server {
+        display: inline-block; /* Display side-by-side */
+        width: 48%; /* Adjust width for two equal sections */
+        margin: 0 1%; /* Add some spacing between sections */
+        vertical-align: top; /* Ensure content aligns at the top */
+        /* Consider adding borders or backgrounds for emphasis */
+      }
+      
+      .client {
+        border-right: none; /* Remove border for cleaner layout */
+      }
+      
+      .client h2,
+      .server h2 {
+        color: #000000;
+        margin-bottom: 20px;
+        font-size: 2em;
+      }
+      
+      .client div,
+      .server div {
+        margin-top: 20px;
+      }
+      
+      .client div a,
+      .server div a {
+        font-size: 1.15em;
+      }
+      
+      /* Bad Request Page (Adjust width and margins) */
+      .badRequest {
+        width: 600px;
+        margin: 300px auto;
+        text-align: center;
+      }
+      
+      /* .badRequest i.logo {
+        font-size: 12em;
+        color: rgb(129, 45, 232);
+        margin-bottom: 15px;
+      } */
+      
+      .badRequest h1 {
+        font-size: 11em;
+        color: rgba(236, 19, 19, 0.7);
+      }
+      
+      .badRequest h3 {
+        font-size: 2em;
+        color: rgba(0, 0, 0, 0.3); /* Lighter gray */
+        margin-bottom: 15px;
+      }
+      
+      .badRequest p {
+        font-size: 1.5em;
+        color: rgba(0, 0, 0, 0.3); /* Lighter gray */
+        margin-bottom: 15px;
+      }
+      
+      /* Links Section (Flexbox layout) */
+      .links {
+        width: 100%;
+        border-top: 1px solid rgba(0, 0, 0, 0.3); /* Lighter gray border */
+        padding-top: 20px;
+        margin-top: 50px;
+        display: flex;
+        justify-content: space-evenly; /* Distribute links evenly */
+      }
+      
+      .badRequest a {
+        margin-bottom: 15px;
+        display: block;
+      }
+      
+      .links h4 {
+        color: rgba(0, 0, 0, 0.3); /* Lighter gray */
+        font-size: 1.2em;
+        margin-left: 28px;
+      }   
+        </style>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/8c404414cb.js" crossorigin="anonymous"></script>
+    <title>413 - Content Too Large</title>
+</head>
+<body>
+    <div class="badRequest">
+        <h1>413</h1>
+        <h3>Content Too Large</h3>
+        <div class="links">
+            <a href="index.html" class="left"><i class="fas fa-arrow-left"></i> Go Back</a>
+            <a href="index.html" class="right">Go To Home Page <i class="fas fa-arrow-right"></i></a>
+        </div>
+    </div>
+</body>
+</html>

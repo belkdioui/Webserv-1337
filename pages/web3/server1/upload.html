@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire de Téléchargement</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('./images/maxresdefault.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height:  100vh;
+            margin:  0;
+            padding:  20px;
+            color: #fff; /* Couleur du texte pour contraster avec l'arrière-plan */
+        }
+
+        .upload-form {
+            text-align: center;
+            padding:  20px;
+            border-radius:  10px;
+            background-color: rgba(0,  0,  0,  0.7); /* Arrière-plan semi-transparent pour le formulaire */
+        }
+
+        .upload-form input[type="file"] {
+            margin-bottom:  10px;
+        }
+
+        .upload-form input[type="submit"] {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            padding:  10px  20px;
+            border-radius:  5px;
+            cursor: pointer;
+        }
+
+        .upload-form input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="upload-form">
+        <h1>Téléchargez vos fichiers</h1>
+        <form action="Up_Solix.py" method="post" enctype="multipart/form-data">
+            <label for="file1">Fichier 1 :</label>
+            <input type="file" id="file1" name="file1" required>
+            <br><br>
+            <label for="file2">Fichier 2 :</label>
+            <input type="file" id="file2" name="file2" required>
+            <br><br>
+            <label for="file3">Fichier 3 :</label>
+            <input type="file" id="file3" name="file3" required>
+            <br><br>
+            <input type="submit" value="Envoyer">
+        </form>
+    </div>
+</body>
+
+</html>
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Form</title>
+</head>
+<body>
+    <form method="post">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+        <br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <br>
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" rows="4" cols="50" required></textarea>
+        <br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulaire de Téléchargement</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('./images/maxresdefault.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height:  100vh;
+            margin:  0;
+            padding:  20px;
+            color: #fff; /* Couleur du texte pour contraster avec l'arrière-plan */
+        }
+
+        .upload-form {
+            text-align: center;
+            padding:  20px;
+            border-radius:  10px;
+            background-color: rgba(0,  0,  0,  0.7); /* Arrière-plan semi-transparent pour le formulaire */
+        }
+
+        .upload-form input[type="file"] {
+            margin-bottom:  10px;
+        }
+
+        .upload-form input[type="submit"] {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            padding:  10px  20px;
+            border-radius:  5px;
+            cursor: pointer;
+        }
+
+        .upload-form input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="upload-form">
+        <h1>Téléchargez votre fichier</h1>
+        <form action="" method="get">
+            <input type="text" id="imagePath" name="path" placeholder="path">
+            <br><br>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+</body>
+</html> -->
